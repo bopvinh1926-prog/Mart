@@ -1,0 +1,113 @@
+@keyframes shrink-nav {
+    to {
+      padding: 10px 0; /* Thu nhỏ khoảng cách trên dưới khi cuộn */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Thêm đổ bóng */
+    }
+  }
+
+.nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly   ;
+    background-color: #1e293b;
+    padding: 0 80px;
+    position: relative;
+    height: 65px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 20px 0;
+    animation: shrink-nav linear both;
+    animation-timeline: scroll(root); /* Theo dõi thanh cuộn của toàn trang web */
+    animation-range: 0px 150px;    
+}
+.logo {
+   width: 200px;
+}
+.logo img{
+    width: 100%;
+}
+.hambuger {
+    display: none;
+    font-size: 28px;
+}
+.menu {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s;
+    
+}
+.menu li {
+    list-style: none;
+   
+}
+.menu li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background 0.15s;
+
+}
+.menu li a:hover {
+    background: rgba(255,255,255,0.07);
+}
+.item-active-menu{
+    background: rgba(255, 255, 255, 0.562);
+    padding: 8px 4px;
+    border-radius: 10px;
+}
+@media(max-width:991px){
+    .menu li a{
+        font-size: 10px;
+        display: flex;
+        flex-wrap: nowrap;
+    }
+}
+@media (max-width: 768px) {
+    .nav-bar {
+        padding: 0 18px;
+        height: 57px;
+    }
+    .hambuger {
+        display: block;
+        color: whitesmoke;
+        cursor: pointer;
+        z-index: 11;
+        margin-left: 12px;
+    }
+    .menu {
+        flex-direction: column;
+        gap: 0;
+        position: absolute;
+        left: 0;
+        top: 57px;
+        width: 100vw;
+        background: #1e293b;
+        padding: 0;
+        align-items: stretch;
+        display: none;
+        border-radius: 0 0 10px 10px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.28);
+        transition: display 0.25s, opacity 0.25s;
+    }
+    .menu.active {
+        display: flex;
+    }
+    .menu li a {
+        display: block;
+        text-align: center;
+        padding: 20px 0;
+        width: 100%;
+        border-top: 1px solid #273043;
+        color: #f1f5fa;
+        font-size: 18px;
+    }
+    .menu li:first-child a {
+        border-top: none;
+    }
+}

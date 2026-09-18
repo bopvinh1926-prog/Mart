@@ -1,0 +1,244 @@
+
+.infor-bill {
+    width: 38%;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.infor-bill-ctn {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(30, 41, 59, 0.10);
+    padding: 20px 24px;
+    height: 92%;
+}
+
+.infor-bill-ctn h1 {
+    margin: 0 0 20px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1e293b;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.infor-bill-ctn .total-bill,
+.infor-bill-ctn .discount,
+.infor-bill-ctn .total-pay {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.infor-bill-ctn .total-bill p,
+.infor-bill-ctn .discount p,
+.infor-bill-ctn .total-pay p {
+    margin: 0;
+    font-size: 15px;
+    color: #475569;
+}
+
+.infor-bill-ctn .total-bill p:last-child,
+.infor-bill-ctn .total-pay p:last-child {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 16px;
+}
+
+.infor-bill-ctn .total-pay {
+    border-bottom: none;
+    padding-bottom: 16px;
+}
+
+.infor-bill-ctn .total-pay p:last-child {
+    font-size: 18px;
+    color: #1e293b;
+}
+
+.infor-bill-ctn .discount input {
+    width: 50%;
+    padding: 8px 12px;
+    font-size: 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background: #fff;
+    color: #1e293b;
+    outline: none;
+    text-align: right;
+    transition: border 0.2s, background 0.2s;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.infor-bill-ctn .discount input:focus {
+    border: 1.5px solid #1e293b;
+    background: #fff;
+}
+
+.infor-bill-ctn .discount input::-webkit-outer-spin-button,
+.infor-bill-ctn .discount input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.infor-bill-ctn select {
+    width: 100%;
+    margin-top: 8px;
+    padding: 10px 14px;
+    font-size: 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background: #fff;
+    color: #1e293b;
+    outline: none;
+    cursor: pointer;
+    transition: border 0.2s;
+    box-sizing: border-box;
+}
+
+.infor-bill-ctn select:focus {
+    border: 1.5px solid #1e293b;
+}
+
+.infor-bill-ctn > p:last-child {
+    margin: 16px 0 0;
+    padding: 12px 14px;
+    background: #f1f5f9;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+    text-align: center;
+}
+/* Container bao ngoài tạo kiểu khung viên nhung/xám nhạt */
+.btn-discount {
+    display: inline-flex;      /* Sắp xếp hàng ngang */
+    align-items: center;
+    background-color: #f1f5f9; /* Màu nền xám nhạt */
+    padding: 3px;
+    border-radius: 8px;        /* Bo góc khung ngoài */
+    border: 1px solid #e2e8f0;
+    gap: 2px;
+  }
+  
+  /* Kiểu dáng chung cho các nút */
+  .btn-type {
+    border: none;
+    background: transparent;
+    color: #64748b;            /* Màu chữ mặc định (xám) */
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 6px;        /* Bo góc nút */
+    cursor: pointer;
+    transition: all 0.2s ease; /* Hiệu ứng chuyên đổi mượt mà */
+    user-select: none;
+  }
+  
+  /* Hiệu ứng khi rê chuột vào nút chưa active */
+  .btn-type:hover:not(.active) {
+    color: #1e293b;
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+  
+  /* Trạng thái Nút Đang Được Chọn (Active) */
+  .btn-type.active {
+    background-color: #ffffff; /* Nền trắng nổi lên */
+    color: #2563eb;            /* Chữ đổi sang xanh nổi bật */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06); /* Tạo bóng mờ 3D */
+  } 
+/* Container bao ngoài có nền xám nhạt */
+.about-pay {
+    background-color: #f0f3f6; /* Màu nền xám xám nhạt như ảnh */
+    padding: 16px;
+    border-radius: 8px;
+  }
+  
+  /* Khung danh sách sắp xếp các nút nằm ngang và tự xuống dòng */
+  .list-amount {
+    display: flex;
+    flex-wrap: wrap; /* Tự xuống dòng khi hết chỗ */
+    gap: 10px;       /* Khoảng cách giữa các nút */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* Tạo hình dáng dạng Pill (bo tròn) cho từng phần tử */
+  .list-amount li, 
+  .list-amount p {
+    background-color: #ffffff; /* Nền trắng */
+    color: #333333;           /* Màu chữ xám đen */
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 18px;        /* Đệm trong tạo độ phồng cho nút */
+    border-radius: 20px;      /* Bo tròn 2 đầu dạng pill */
+    border: 1px solid #e2e8f0;/* Viền mỏng nhẹ */
+    
+    
+    /* Tạo bóng mờ nhẹ dưới chân */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); 
+    width: 60px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+    text-align: center;
+  }
+  .list-amount .active{
+    background-color: #64748b;
+    color: #e2e8f0;
+  }
+  
+  /* Hiệu ứng khi di chuột vào nút */
+  .list-amount li:hover,
+  .list-amount p:hover {
+    background-color: #e8f0fe; /* Đổi màu nhẹ khi hover */
+    border-color: #2563eb;     /* Viền đổi sang xanh */
+    color: #2563eb;
+  }
+  /* Khung chứa bên ngoài */
+.qr-code {
+  outline: 1px solid gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  background-color: #ffffff; /* Nền trắng giúp mã QR dễ quét */
+  border-radius: 12px;       /* Bo tròn góc khung */
+  border: 1px solid #e2e8f0; /* Viền mỏng nhẹ */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Bóng mờ hiện đại */
+  
+         /* Kích thước vừa vặn với ảnh bên trong */
+  margin: 0 auto;            /* Căn giữa khung ra giữa màn hình/cột */
+  width: 120px;
+  height: 120px;
+  overflow: hidden;
+}
+
+/* Ảnh QR bên trong */
+.qr-code img {
+  width: 140%;             /* Chỉnh kích thước tùy ý (VD: 200px đến 250px) */
+  object-fit: cover; 
+  padding-top: 70px;      /* Giữ nguyên tỷ lệ ảnh, không bị méo */
+
+}
+.payment {
+    background: #1e293b;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    padding: 10px 28px;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(30, 41, 59, 0.13);
+    transition: background 0.16s;
+}
+
+.payment:hover {
+    background: #334155;
+}   

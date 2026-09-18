@@ -1,0 +1,170 @@
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  min-width: 100vw;
+  box-sizing: border-box;
+  
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  background-color: #1e293b;
+  align-items: center;
+  width: 100vh;
+  height: 100vh;
+  min-width: 100vw;
+  min-height: 100vh;
+  padding: 0; /* Remove padding to truly fill the screen */
+  margin: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  padding: 0px 100px 0px 0px;
+  position: relative;
+}
+
+/* Thẻ form chính */
+.form-container form {
+  background: #ffffff;
+  padding: 32px 28px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 0px 100px;
+}
+form img{
+  display: flex;
+  margin: 0px 10%;
+}
+/* Khối nhập Tên đăng nhập và Mật khẩu */
+.userName,
+.password {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+
+/* Nhãn label */
+.userName label,
+.password label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0c2549 !important;
+}
+
+/* Ô nhập liệu input */
+.userName input,
+.password input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #1e293b;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+/* Ô password chừa khoảng trống bên phải cho nút con mắt */
+.password input {
+  padding-right: 44px;
+}
+
+/* Hiệu ứng viền xanh khi bấm vào input */
+.userName input:focus,
+.password input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Nút ẩn / hiện mật khẩu (nút con mắt trong .password) */
+.password button[type="button"] {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s ease;
+}
+
+.password button[type="button"]:hover {
+  transform: scale(1.1);
+}
+
+.btns {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  outline: none;
+  margin-top: 18px;
+  position: relative;
+}
+
+/* Nút Submit Đăng nhập */
+.form-container form button[type="submit"] {
+  padding: 12px 32px;
+  background-color: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 0;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.10);
+  transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+  outline: none;
+}
+
+/* Trạng thái hover nút đăng nhập */
+.form-container form button[type="submit"]:hover {
+  background-color: #1d4ed8;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.15);
+  outline: none;
+}
+
+/* Trạng thái active nút đăng nhập */
+.form-container form button[type="submit"]:active {
+  transform: scale(0.97);
+  outline: none;
+}
+.sign {
+  padding: 12px 32px;
+  background-color: #e53935; /* Màu đỏ rực */
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 0;
+  box-shadow: 0 2px 8px rgba(229, 57, 53, 0.12);
+  transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+  outline: none;
+}
+
+.sign:hover {
+  background-color: #b71c1c;
+  box-shadow: 0 4px 16px rgba(229, 57, 53, 0.18);
+  outline: none;
+}
+
+.sign:active {
+  transform: scale(0.97);
+  outline: none;
+}
