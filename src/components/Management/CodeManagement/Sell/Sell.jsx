@@ -1,41 +1,20 @@
 import '../../CSSManagement/Sell.css'
 import { useEffect, useRef, useState } from 'react'
-const PRODUCTS = [
-    { code: 'SP001', name: 'Thịt gà chay', price: 25000, quantity: 10, buyQuantity: '' },
-    { code: 'SP002', name: 'Đậu hũ', price: 15000, quantity: 20, buyQuantity: '' },
-    { code: 'SP003', name: 'Nấm kim châm', price: 18000, quantity: 15, buyQuantity: '' },
-    { code: 'SP004', name: 'Nấm bào ngư', price: 22000, quantity: 12, buyQuantity: '' },
-    { code: 'SP005', name: 'Rau cải xanh', price: 12000, quantity: 30, buyQuantity: '' },
-    { code: 'SP006', name: 'Cà rốt', price: 10000, quantity: 25, buyQuantity: '' },
-    { code: 'SP007', name: 'Khoai tây', price: 18000, quantity: 18, buyQuantity: '' },
-    { code: 'SP008', name: 'Bắp cải', price: 16000, quantity: 14, buyQuantity: '' },
-    { code: 'SP009', name: 'Cà chua', price: 20000, quantity: 22, buyQuantity: '' },
-    { code: 'SP010', name: 'Dưa leo', price: 12000, quantity: 28, buyQuantity: '' },
-    { code: 'SP011', name: 'Đậu que', price: 17000, quantity: 16, buyQuantity: '' },
-    { code: 'SP012', name: 'Bí đỏ', price: 19000, quantity: 11, buyQuantity: '' },
-    { code: 'SP013', name: 'Rau muống', price: 10000, quantity: 35, buyQuantity: '' },
-    { code: 'SP014', name: 'Bông cải xanh', price: 30000, quantity: 13, buyQuantity: '' },
-    { code: 'SP015', name: 'Hành tây', price: 15000, quantity: 24, buyQuantity: '' },
-    { code: 'SP016', name: 'Tỏi', price: 35000, quantity: 17, buyQuantity: '' },
-    { code: 'SP017', name: 'Ớt chuông', price: 28000, quantity: 19, buyQuantity: '' },
-    { code: 'SP018', name: 'Đậu bắp', price: 16000, quantity: 21, buyQuantity: '' },
-    { code: 'SP019', name: 'Rau xà lách', price: 14000, quantity: 26, buyQuantity: '' },
-    { code: 'SP020', name: 'Bắp ngọt', price: 18000, quantity: 20, buyQuantity: '' }
-];
+import { PRODUCTS_SELL } from '../../../../data/PRODUCTS_SELL.JS';
 import InforBill from './InforBill';
 export default function Sell(){
     const [product,setProduct] =useState("");
     const [listBuy,setListBuy] = useState([])
-    const [showWrapper,setShowWrapper] = useState(false)
-    const wrapper=useRef(null)    
+    const [showWrapper,setShowWrapper] = useState(false) // tắt mở danh sách gợi ý hàng hóa
+    const wrapper=useRef(null)    // trạng thái mở ô list bán hàng
     const [listSuggest,setListSuggest] = useState([])
    
    
     
-    
-    const [listProduct, setListProduct] = useState(() => {
+    // nạp tất cả dữ liệu vào  listProduct vào localStorage 
+    const [listProduct, setListProduct] = useState(() => { 
         const saved = localStorage.getItem("products");
-        if (!saved || saved === "undefined") return PRODUCTS;
+        if (!saved || saved === "undefined") return PRODUCTS_SELL;
         return JSON.parse(saved);
     });
     
@@ -52,7 +31,7 @@ export default function Sell(){
     const handleListSuggest = (product) => {
         if (!product) return [];
         const keyword = product.toLowerCase().trim();
-        return PRODUCTS.filter(item => {
+        return PRODUCTS_SELL.filter(item => {
             const matchCode = item.code.toLowerCase().includes(keyword);
             const matchName = item.name.toLowerCase().includes(keyword);
             return (matchCode || matchName)
@@ -185,13 +164,12 @@ export default function Sell(){
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
-    
+    // thông báo hiển thị thanh toán thành công
     const handlePay =()=>{
         alert("Bạn đã thanh toán đơn hàng")
         setListBuy([])
-        
     }
-
+    
     return(
         <div className="sell">
             <div className='sell-ctn' >
@@ -211,10 +189,13 @@ export default function Sell(){
                     />
             
                     <ul className='suitable-list' ref={wrapper}>
-                        {showWrapper && listSuggest.slice(0,5).map(item => (
+                        {showWrapper && listSuggest.map(item => {
+                        console.log(item)
+                        return(
                             <li
                                 className='product-item'
                                 key={item.code}
+                                
                                 onClick={() => {
                                     handleAddProduct(item);
                                     setShowWrapper(false);  
@@ -225,7 +206,7 @@ export default function Sell(){
                                 <p>{item.name}</p>
                             </li>
                     
-                        ))}
+                        )})}
                     </ul>
         
                 </div>
