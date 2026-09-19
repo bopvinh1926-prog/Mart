@@ -1,0 +1,22 @@
+export const PRODUCTS_SELL = [
+    { code: 'SP001', name: 'Thịt gà chay', price: 25000, quantity: 10, buyQuantity: '' },
+    { code: 'SP002', name: 'Đậu hũ', price: 15000, quantity: 20, buyQuantity: '' },
+    { code: 'SP003', name: 'Nấm kim châm', price: 18000, quantity: 15, buyQuantity: '' },
+    { code: 'SP004', name: 'Nấm bào ngư', price: 22000, quantity: 12, buyQuantity: '' },
+    { code: 'SP005', name: 'Rau cải xanh', price: 12000, quantity: 30, buyQuantity: '' },
+    { code: 'SP006', name: 'Cà rốt', price: 10000, quantity: 25, buyQuantity: '' },
+    { code: 'SP007', name: 'Khoai tây', price: 18000, quantity: 18, buyQuantity: '' },
+    { code: 'SP008', name: 'Bắp cải', price: 16000, quantity: 14, buyQuantity: '' },
+    { code: 'SP009', name: 'Cà chua', price: 20000, quantity: 22, buyQuantity: '' },
+    { code: 'SP010', name: 'Dưa leo', price: 12000, quantity: 28, buyQuantity: '' },
+    { code: 'SP011', name: 'Đậu que', price: 17000, quantity: 16, buyQuantity: '' },
+    { code: 'SP012', name: 'Bí đỏ', price: 19000, quantity: 11, buyQuantity: '' },
+    { code: 'SP013', name: 'Rau muống', price: 10000, quantity: 35, buyQuantity: '' },
+    { code: 'SP014', name: 'Bông cải xanh', price: 30000, quantity: 13, buyQuantity: '' },
+    { code: 'SP015', name: 'Hành tây', price: 15000, quantity: 24, buyQuantity: '' },
+    { code: 'SP016', name: 'Tỏi', price: 35000, quantity: 17, buyQuantity: '' },
+    { code: 'SP017', name: 'Ớt chuông', price: 28000, quantity: 19, buyQuantity: '' },
+    { code: 'SP018', name: 'Đậu bắp', price: 16000, quantity: 21, buyQuantity: '' },
+    { code: 'SP019', name: 'Rau xà lách', price: 14000, quantity: 26, buyQuantity: '' },
+    { code: 'SP020', name: 'Bắp ngọt', price: 18000, quantity: 20, buyQuantity: '' }
+];
