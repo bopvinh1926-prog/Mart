@@ -385,7 +385,7 @@ export default function History({listHistory}) {
     
     // {listHistory.length>1? console.log( listHistory[0].employee+" "+listHistory[0].createdAt+" "+listHistory[0].isAvailable 
     //     +listHistory.arrayEditItem.productCode) : ""}
-    console.log(listHistory[0])
+    
     
     
     

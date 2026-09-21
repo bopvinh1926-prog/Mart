@@ -5,7 +5,9 @@ import History from "./History";
 import {PRODUCTS} from '../../../../data/PRODUCTS.js' ;
 
 export default function Products() {
-    const [selectedSupplier,setSelectedSupplier] = useState();
+    
+    const [selectedSupplier,setSelectedSupplier] = useState(); /// nhà cung cấp được chọn
+    const [groupSupplier,setGroupSupplier]  = useState([]);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [itemEdit, setItemEdit] = useState({});
 
@@ -115,7 +117,7 @@ export default function Products() {
             return updatedProducts;
         });
     };
-
+    
     return (
         <div className="products-container">
             <div className="sidebar">
@@ -133,7 +135,11 @@ export default function Products() {
 
             {isSidebarOpen && (
                 <div className="main-products">
-                    <GeneralInforProducts handleSupplier= {setSelectedSupplier} />
+                    <GeneralInforProducts 
+                        handleSupplier= {setSelectedSupplier} 
+                        suppliers={groupSupplier} 
+                        setSuppliers = {setGroupSupplier}
+                    />
                     <div className="products-list">
                         <h1 className="title-products-list">DANH SÁCH & TỔNG CỘNG</h1>
                         <div className="about-list-products">

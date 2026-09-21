@@ -1,9 +1,12 @@
 import { useState } from "react"
-export default function GeneralInforProducts({handleSupplier}){
+export default function GeneralInforProducts({handleSupplier,suppliers,setSuppliers}){
+    // các form điền vào 
     const [formInfor,setFormInfor] = useState(
         {date:"",supplier:"",supplierAdd:"",node:""}
     )
-    const [suppliers,setSuppliers] = useState([])
+    // Mảng quản lí các nhà cung cấp đã từng liên hệ
+    
+    
     const [openCreate,setOpenCreate] = useState(false)
 
     const handleChange = (e) => {
@@ -14,24 +17,26 @@ export default function GeneralInforProducts({handleSupplier}){
         }));
         
     }
-    const handleAddSuppliers = (value) => {
-        setSuppliers(prev => [...prev, value]); 
-        setFormInfor(prev => ({ ...prev, supplierAdd: "" }));   
+    const handleAddSuppliers = (value) => { /// thêm nhà cung cấp
+        setSuppliers(prev => [...prev, value]);  // thêm nhà cung cấp vào state
+        setFormInfor(prev => ({ ...prev, supplierAdd: "" }));    // reset lại
         setOpenCreate(false )
     }
+    // hàm chọn nhà cung cấp
     const handleSelectedSupplier = (selectedSupplier)=>{
         const isValid = suppliers.filter((sp)=>sp === selectedSupplier);
-        if(isValid){
+        console.log(typeof isValid,isValid.length)
+        if(isValid.length >0){
             handleSupplier(selectedSupplier);
             setFormInfor(prev =>({...prev,formInfor:""})); 
 
         }
         else{
             alert("K tồn tại nhà cung cấp")
+            setFormInfor((prev)=>({...prev,supplier:""}))
         }
         
     }
-    console.log(suppliers)
     return(
         <div className="general-info-container">
             <h1 className="general-info-title">THÔNG TIN CHUNG</h1>
