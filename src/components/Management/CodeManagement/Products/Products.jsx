@@ -1,16 +1,20 @@
 import { useState, useRef, useEffect } from "react";
+import Modal from "./Modal.jsx";
 import "../../CSSManagement/ProductsStyle/Products.css";
 import GeneralInforProducts from "./GeneralInforProducts";
 import History from "./History";
 import {PRODUCTS} from '../../../../data/PRODUCTS.js' ;
 
 export default function Products() {
-    
+    const [openModal,setOpenModal] = useState(false);
     const [selectedSupplier,setSelectedSupplier] = useState(); /// nhà cung cấp được chọn
     const [groupSupplier,setGroupSupplier]  = useState([]);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true); // true là mở bên Hàng hóa False là mở bên nhập hàng
     const [itemEdit, setItemEdit] = useState({});
-
+    const [products,setProducts] = useState(PRODUCTS);
+    const handleCreateProductsList = (item)=>{
+        setProducts(prev =>[...prev,item])
+    }
     // Khi thêm sản phẩm vào itemEdit => copy thuộc tính từ sản phẩm selected
     const handleAddProductEdit = (prd) => {
         setItemEdit((prev) => ({
@@ -100,7 +104,7 @@ export default function Products() {
     };
 
     // Danh sách sản phẩm có thể thêm (không bị chọn rồi, và filter theo tìm kiếm)
-    const availableProducts = PRODUCTS.filter(item => {
+    const availableProducts = products.filter(item => {
         const notDuplicated = !itemEdit[item.id];
         const searchStr = searchValue.trim().toLowerCase();
         const searchInID = item.id.toLowerCase().includes(searchStr);
@@ -118,6 +122,8 @@ export default function Products() {
         });
     };
     
+    console.log(products.length)
+
     return (
         <div className="products-container">
             <div className="sidebar">
@@ -153,6 +159,19 @@ export default function Products() {
                                 }}
                                 value={searchValue}
                             />
+                            <div className="add-products ">
+                                <button  className="btn-add-prd open"
+                                    onClick={()=>setOpenModal(true)} >Thêm sản phẩm
+                                </button>
+                                <Modal isOpen={openModal} handleCreateProducts={handleCreateProductsList} 
+                                    onClose={()=>setOpenModal(false)} 
+                                    title={"Hello World"}>
+                                    <button className="btn-add-prd close"
+                                        onClick={() => setOpenModal(false)}>X
+                                    </button>
+                                </Modal>
+                            </div>
+                            
                             <div className={showList ? "list-add-products" : ""} ref={wrapper}>
                                 {showList &&
                                     availableProducts.slice(0, 5).map((item) => (
@@ -187,7 +206,7 @@ export default function Products() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {PRODUCTS.filter(item => itemEdit[item.id] !== undefined).map((item) => (
+                                    {products.filter(item => itemEdit[item.id] !== undefined).map((item) => (
                                         <tr key={item.id}>
                                             <td className="table-th">{item.id}</td>
                                             <td className="table-th">{item.name}</td>

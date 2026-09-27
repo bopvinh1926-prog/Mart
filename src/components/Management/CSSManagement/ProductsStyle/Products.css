@@ -377,6 +377,33 @@ html,body{
   margin-bottom: 50px;
   position: relative;
 }
+.btn-add-prd{
+  width: 100px;
+  height: 35px;
+  border: none;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  outline: none;
+  padding: 3px;
+}
+.open{
+  color: #fff;
+  background-color: #2563eb;
+}
+.close{
+  background-color: #007bff;
+  color: #93c5fd;
+}
+.open:hover,
+.close:hover {
+  box-shadow: 0 2px 8px #60a5fa80; /* Tạo shadow xanh nhẹ */
+  opacity: 0.95;
+  transform: translateY(-2px) scale(1.03); /*di chuyển nâng lên*/
+  transition: box-shadow 0.2s, opacity 0.2s, transform 0.2s; 
+  
+}
+
 /* Khung chứa danh sách (Dropdown gợi ý) */
 .list-add-products {
   position: absolute;
