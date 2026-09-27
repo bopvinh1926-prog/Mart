@@ -1,0 +1,81 @@
+
+/* Khung chứa Form */
+.form-add-product {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 5px;
+    gap: 10px;
+    width: 500px;
+  }
+  
+  /* Khung từng ô nhập liệu */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  /* Nhãn Label */
+  .form-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+  }
+  
+  /* Ô nhập liệu Input */
+  .form-input {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.2s ease-in-out;
+    box-sizing: border-box; /* Đảm bảo padding không làm vỡ khung */
+  }
+  
+  /* Hiệu ứng khi bấm vào ô Input (Focus) */
+  .form-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  }
+  
+  /* Placeholder */
+  .form-input::placeholder {
+    color: #94a3b8;
+  }
+  
+  /* Khung chứa nút bấm (Nằm full width bên dưới) */
+  .form-actions {
+    grid-column: span 2; /* Trải dài hết 2 cột */
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+  }
+  
+  /* Nút Submit */
+  .btn-submit {
+    padding: 10px 24px;
+    background-color: #2563eb;
+    color: #ffffff;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .btn-submit:hover {
+    background-color: #1d4ed8;
+  }
+  
+  /* Responsive cho màn hình điện thoại (Mobile) */
+  @media (max-width: 640px) {
+    .form-add-product {
+      grid-template-columns: 1fr; /* Đưa về 1 cột duy nhất */
+    }
+  
+    .form-actions {
+      grid-column: span 1;
+    }
+  }
