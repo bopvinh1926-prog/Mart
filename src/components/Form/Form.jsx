@@ -4,7 +4,7 @@ import SlideShow from "../SlideShow/SlideShow";
 import Logo from '../../assets/logo-removebg-preview.png';
 import Register from '../Register/Register'
 import Management from '../Management/CodeManagement/Sell/Management.jsx'
-export default function Form({onLogin,login,onLogout}){
+export default function Form({onLogin,login}){ // onLogOut ch cần sửu dụng đến
     // chuyển hướng trang qua Register
     const[onRegister,setOnRegister] =useState(false)
 
@@ -40,7 +40,7 @@ export default function Form({onLogin,login,onLogout}){
             acc.name === user.name && acc.password === user.password
         );
     }
-    
+    console.log(listUser)
     return (
         !login && (
             <div className="form-container">

@@ -11,9 +11,19 @@ export default function Products() {
     const [groupSupplier,setGroupSupplier]  = useState([]);
     const [isSidebarOpen, setIsSidebarOpen] = useState(true); // true là mở bên Hàng hóa False là mở bên nhập hàng
     const [itemEdit, setItemEdit] = useState({});
-    const [products,setProducts] = useState(PRODUCTS);
+    //  cho thằng này thành localStorage 
+    
+    const [products,setProducts] = useState(()=>{
+        const dataProduct = localStorage.getItem('products');
+        return dataProduct ? JSON.parse(dataProduct):PRODUCTS ; 
+    })
+    // 
     const handleCreateProductsList = (item)=>{
-        setProducts(prev =>[...prev,item])
+        setProducts((prev)=>{
+            const newListProduct = [...prev,item];
+            localStorage.setItem('products',JSON.stringify(newListProduct));
+            return  newListProduct;
+        })
     }
     // Khi thêm sản phẩm vào itemEdit => copy thuộc tính từ sản phẩm selected
     const handleAddProductEdit = (prd) => {
@@ -62,16 +72,30 @@ export default function Products() {
     };
 
     // Lịch sử nhập hàng: mỗi lần nhấn lưu thì chúng ta lưu lại mảng các sản phẩm nhập gần nhất
-    const [historyImportProducts, setHistoryImportProducts] = useState([]);
-    const handleAddHistoryImport = (historyImport) => {
-        const newRecord = {
+   // tạo thêm cái listHistory quản lí bằng localStorage 
+    // Khởi tạo state lịch sử nhập hàng từ localStorage, 
+    // nếu không có trong localStorage thì trả về mảng rỗng để tránh lỗi undefined.
+    const [historyImportProducts, setHistoryImportProducts] = useState(() => {
+        const dataHistory = localStorage.getItem('dataHistory');
+        return dataHistory ? JSON.parse(dataHistory) : [];
+    });
+
+
+    const handleSaveHistoryImport = (itemEdit, createdAt) => {
+        const newListHistory = {
             employee: "admin", // TODO: nếu có đăng nhập lấy tên user real
-            createdAt: Date.now(),
+            createdAt,
             isAvailable: false,
             supplier:selectedSupplier,
-            arrayItemEdit: historyImport
+            arrayItemEdit: itemEdit
         };
-        setHistoryImportProducts((prev) => [...prev, newRecord]);
+
+        // Cập nhật lịch sử nhập hàng vào cả state và localStorage
+        setHistoryImportProducts((prev) => {
+            const updatedHistory = [...prev, newListHistory];
+            localStorage.setItem('dataHistory', JSON.stringify(updatedHistory));
+            return updatedHistory;
+        });
         setItemEdit({});
         setSelectedSupplier("");
     };
@@ -122,7 +146,7 @@ export default function Products() {
         });
     };
     
-    console.log(products.length)
+   console.log(products.length)
 
     return (
         <div className="products-container">
@@ -265,7 +289,13 @@ export default function Products() {
                                 </tbody>
                             </table>
                         </div>
-                        <button className="btn-save" onClick={() => handleAddHistoryImport(itemEdit)}>
+                        <button
+                            className="btn-save"
+                            onClick={() => {
+                               
+                                handleSaveHistoryImport(itemEdit,Date.now());
+                            }}
+                        >
                             Lưu
                         </button>
                     </div>

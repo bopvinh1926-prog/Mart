@@ -355,6 +355,7 @@ const listHistory = [
 */
 import { useState } from 'react';
 export default function History({listHistory}) {
+   
     const [currentPage,setCurrentPage] = useState(1)
     const [displayPage,setDisplayPage] = useState(1);
     const [currentExpandBox,setCurrentExpandBox] = useState(null);

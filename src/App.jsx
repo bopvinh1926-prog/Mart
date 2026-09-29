@@ -1,7 +1,7 @@
 import Form from './components/Form/Form'
 import { useState } from 'react'
 import './App.css'
-import Management from './components/Management/CodeManagement/Sell/Management.jsx'
+//import Management from './components/Management/CodeManagement/Sell/Management.jsx'
 function App() {
   const [loggedIn, setLoggedIn] = useState(() => {
     const stored = localStorage.getItem("loggedIn");
@@ -11,14 +11,15 @@ function App() {
     setLoggedIn(true);
     localStorage.setItem("loggedIn",JSON.stringify(true))
   }
-  const handleLogout =()=>{
+  /*
+  const handleLogout =()=>{ // hàm này chưa cần sử dụng đến
     setLoggedIn(false);
     localStorage.setItem("loggedIn",JSON.stringify(false))
-  }
+  }*/
   return (
     <>
         {/*<Management/>*/}
-        { <Form onLogin={handleLogin} login={loggedIn} onLogout={handleLogout}/> }
+        { <Form onLogin={handleLogin} login={loggedIn} /*onLogout={handleLogout} */ /> }
 
     </>
   )

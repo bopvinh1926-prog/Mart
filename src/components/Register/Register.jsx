@@ -1,6 +1,6 @@
     import { useState,useEffect } from "react"
     import './Register.css'
-    import Form from "../Form/Form"
+    import App from '../../App';
     export default function Register({listUser,handleRegister}){
         
         const [registered,setRegistered] = useState(false)
@@ -48,8 +48,6 @@
         useEffect(()=>{
             localStorage.setItem("listUser", JSON.stringify(listUser));
         },[listUser])
-
-       
         // handleSubmit
         const handleSubmit = (e)=>{
             e.preventDefault();
@@ -83,7 +81,7 @@
 
         // khi đăng kí thì quay về trang đăng nhập
         if(registered){
-            return <Form/>
+            return <App/>
         }
         
         return (

@@ -1,9 +1,21 @@
 import '../../CSSManagement/Sell.css'
 import { useEffect, useRef, useState } from 'react'
 import { PRODUCTS_SELL } from '../../../../data/PRODUCTS_SELL.JS';
+/* 
+    lấy dữ  liệu tuwf localStorage
+    ==> tạo mảng ProductSell coppy từ dữ liệu Products  từ  task Products  và  thêm thuộc tính buyQuantity 
+    ví dụ demoe
+    const produtSell = products.map((item)=>
+    return {
+        ...item,buyQuantity:'';
+    })
+*/
 import InforBill from './InforBill';
 export default function Sell(){
-    const [product,setProduct] =useState("");
+    // => đem nó vào localStorage   
+    // sửa code thành ID
+    const [product,setProduct] =useState(""); // chỉnh thành productSell
+
     const [listBuy,setListBuy] = useState([])
     const [showWrapper,setShowWrapper] = useState(false) // tắt mở danh sách gợi ý hàng hóa
     const wrapper=useRef(null)    // trạng thái mở ô list bán hàng
