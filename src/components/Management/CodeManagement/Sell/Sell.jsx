@@ -11,6 +11,9 @@ import { PRODUCTS_SELL } from '../../../../data/PRODUCTS_SELL.JS';
     })
 */
 import InforBill from './InforBill';
+
+const getProductKey = (p) => p?.code || p?.id // do chưa chỉnh id thành code
+
 export default function Sell(){
     // => đem nó vào localStorage   
     // sửa code thành ID
@@ -52,16 +55,14 @@ export default function Sell(){
 
     // Khi thêm sản phẩm, thêm thuộc tính buyQuantity mặc định là ''
     const handleAddProduct = (product) => {
-        const remaining = listProduct.find(p => p.code === product.code)?.quantity ?? 0
-        if (remaining < 1) return
-
-        const exists = listBuy.some(prev => prev.code === product.code);
+        const productKey = getProductKey(product)
+        const exists = listBuy.some(prev => getProductKey(prev) === productKey);
         if (!exists) {
             setListBuy(prev => [...prev, { ...product, buyQuantity: '1' }]);
         } else {
             setListBuy(prev =>
                  prev.map(item =>
-                     item.code === product.code
+                     getProductKey(item) === productKey
                          ? { ...item, buyQuantity: (parseInt(item.buyQuantity || "0", 10) + 1).toString() }
                          : item
                  )
@@ -69,7 +70,7 @@ export default function Sell(){
         }
         setListProduct(prev =>
             prev.map(p =>
-                p.code === product.code
+                getProductKey(p) === productKey
                     ? { ...p, quantity: p.quantity - 1 }
                     : p
             )
@@ -78,10 +79,11 @@ export default function Sell(){
     
     const handleDeleteProduct = (product)=>{
         const buyQty = parseInt(product.buyQuantity || '0', 10)
-        setListBuy(prev => prev.filter((item)=>item.code !== product.code))
+        const productKey = getProductKey(product)
+        setListBuy(prev => prev.filter((item)=>getProductKey(item) !== productKey))
         setListProduct(prev =>
             prev.map(p =>
-                p.code === product.code
+                getProductKey(p) === productKey
                     ? { ...p, quantity: p.quantity + buyQty }
                     : p
             )
@@ -93,8 +95,12 @@ export default function Sell(){
         return sum+BuyQuantity * curr.price
     },0)
 
+    // Hàm này nhận vào mã sản phẩm (code)
+    // Nó tìm sản phẩm với mã đó trong mảng listProduct
+    // Nếu tìm thấy, trả về số lượng hiện còn của sản phẩm đó (quantity)
+    // Nếu không tìm thấy, trả về 0
     const getRemainingStock = (code) => {
-        const stockItem = listProduct.find(p => p.code === code)
+        const stockItem = listProduct.find(p => getProductKey(p) === code)
         return stockItem?.quantity ?? 0
     }
 
@@ -109,7 +115,7 @@ export default function Sell(){
             })
             setListProduct(prev =>
                 prev.map(p =>
-                    p.code === listBuy[index].code
+                    getProductKey(p) === getProductKey(listBuy[index])
                         ? { ...p, quantity: p.quantity + current }
                         : p
                 )
@@ -121,7 +127,7 @@ export default function Sell(){
 
         const item = listBuy[index]
         const current = parseInt(item.buyQuantity || '0', 10)
-        const remaining = getRemainingStock(item.code)
+        const remaining = getRemainingStock(getProductKey(item))
         const maxBuy = current + remaining
         const clamped = Math.min(nextBuy, maxBuy)
         const delta = clamped - current
@@ -134,7 +140,7 @@ export default function Sell(){
         if (delta !== 0) {
             setListProduct(prev =>
                 prev.map(p =>
-                    p.code === item.code
+                    getProductKey(p) === getProductKey(item)
                         ? { ...p, quantity: p.quantity - delta }
                         : p
                 )
@@ -143,13 +149,14 @@ export default function Sell(){
     }
 
     const handleButtonQuantity = (index, delta) => {
+        
         const item = listBuy[index]
         if (!item) return
 
         const current = parseInt(item.buyQuantity || '0', 10)
         const nextBuy = current + delta
         if (nextBuy < 0) return
-        if (delta > 0 && getRemainingStock(item.code) < delta) return
+        if (delta > 0 && getRemainingStock(getProductKey(item)) < delta) return
 
         setListBuy(prev => {
             const updated = [...prev]
@@ -158,7 +165,7 @@ export default function Sell(){
         })
         setListProduct(prev =>
             prev.map(p =>
-                p.code === item.code
+                getProductKey(p) === getProductKey(item)
                     ? { ...p, quantity: p.quantity - delta }
                     : p
             )
@@ -181,7 +188,6 @@ export default function Sell(){
         alert("Bạn đã thanh toán đơn hàng")
         setListBuy([])
     }
-    
     return(
         <div className="sell">
             <div className='sell-ctn' >
@@ -202,13 +208,13 @@ export default function Sell(){
             
                     <ul className='suitable-list' ref={wrapper}>
                         {showWrapper && listSuggest.map(item => {
-                        console.log(item)
                         return(
                             <li
                                 className='product-item'
                                 key={item.code}
                                 
                                 onClick={() => {
+                                    console.log("Đã gọi click tới các item") // vẫn đang chạy
                                     handleAddProduct(item);
                                     setShowWrapper(false);  
                                     setProduct("")
@@ -238,14 +244,15 @@ export default function Sell(){
                                         min={0}
                                         onChange={(e)=>handleChangeBuyQuantity(e,index)}
                                     />
-                                    <button
+                                    <button 
+                                        style={{color:"red"}}
                                         type="button"
-                                        disabled={getRemainingStock(item.code) < 1}
+                                        // disabled={getRemainingStock(item.code)<1 }
                                         onClick={()=>handleButtonQuantity(index, 1)}
                                     >+</button>
                                     <button
                                         type="button"
-                                        disabled={parseInt(item.buyQuantity || '0', 10) < 1}
+                                       // disabled={parseInt(item.buyQuantity || '0', 10) < 1}
                                         onClick={()=>handleButtonQuantity(index, -1)}
                                     >-</button>
                                 </div>
