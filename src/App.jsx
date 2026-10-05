@@ -11,15 +11,14 @@ function App() {
     setLoggedIn(true);
     localStorage.setItem("loggedIn",JSON.stringify(true))
   }
-  /*
-  const handleLogout =()=>{ // hàm này chưa cần sử dụng đến
+  const handleLogout =()=>{ 
     setLoggedIn(false);
     localStorage.setItem("loggedIn",JSON.stringify(false))
-  }*/
+  }
   return (
     <>
         {/*<Management/>*/}
-        { <Form onLogin={handleLogin} login={loggedIn} /*onLogout={handleLogout} */ /> }
+        { <Form onLogin={handleLogin} login={loggedIn} onLogout={handleLogout} /> }
 
     </>
   )

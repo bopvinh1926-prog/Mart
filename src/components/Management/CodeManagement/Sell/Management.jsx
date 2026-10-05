@@ -7,13 +7,13 @@ import '../../CSSManagement/Sell.css'
 import '../../CSSManagement/InforBill.css'
 import { useState } from 'react'
 
-export default function Management(){
+export default function Management({onLogout}){
     const [menuActive,setMenuActive] =useState("products")
     console.log(menuActive)
 
     return(
         <main className='management'>
-            <Menu menuActive ={menuActive} onClickMenu={setMenuActive}/>
+            <Menu menuActive ={menuActive} onClickMenu={setMenuActive} onLogout={onLogout}/>
             <div className='management-container' 
                 
             >

@@ -4,7 +4,7 @@ import SlideShow from "../SlideShow/SlideShow";
 import Logo from '../../assets/logo-removebg-preview.png';
 import Register from '../Register/Register'
 import Management from '../Management/CodeManagement/Sell/Management.jsx'
-export default function Form({onLogin,login}){ // onLogOut ch cần sửu dụng đến
+export default function Form({onLogin,login,onLogout}){ // onLogOut ch cần sửu dụng đến
     // chuyển hướng trang qua Register
     const[onRegister,setOnRegister] =useState(false)
 
@@ -31,7 +31,7 @@ export default function Form({onLogin,login}){ // onLogOut ch cần sửu dụng
     if(login){
         return(
             <> 
-                <Management/>
+                <Management onLogout={onLogout}/>
             </>
         )
     }

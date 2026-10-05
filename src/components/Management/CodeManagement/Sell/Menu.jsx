@@ -1,7 +1,7 @@
 import {  useState } from "react"
 import '../../CSSManagement/Menu.css'
 import Logo from '../../../../assets/logo-removebg-preview.png';
-export default function Menu({menuActive,onClickMenu}){
+export default function Menu({menuActive,onClickMenu,onLogout}){
     
     const [isOpen,shetIsOpen] = useState(false);
     return(
@@ -36,6 +36,11 @@ export default function Menu({menuActive,onClickMenu}){
                     onClick={() => onClickMenu('summary')}
                 >
                     <a href="#">Tổng kết bán hàng</a>
+                </li>
+                <li className='logout' onClick={()=>{
+                    onLogout();
+                }}>
+                    <a href="#">Đăng xuất</a>
                 </li>
             </ul>
        
