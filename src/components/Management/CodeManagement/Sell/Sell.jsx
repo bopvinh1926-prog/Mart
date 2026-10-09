@@ -1,6 +1,7 @@
 import '../../CSSManagement/Sell.css'
 import { useEffect, useRef, useState } from 'react'
 import { PRODUCTS_SELL } from '../../../../data/PRODUCTS_SELL.JS';
+import { formatDate } from '../../../utils/dateUtils';
 /* 
     lấy dữ  liệu tuwf localStorage
     ==> tạo mảng ProductSell coppy từ dữ liệu Products  từ  task Products  và  thêm thuộc tính buyQuantity 
@@ -17,13 +18,16 @@ const getProductKey = (p) => p?.code || p?.id // do chưa chỉnh id thành code
 export default function Sell(){
     // => đem nó vào localStorage   
     // sửa code thành ID
-    const [product,setProduct] =useState(""); // chỉnh thành productSell
-
+    const [listBill,setListBill] = useState(()=>{
+        const dataBill = localStorage.getItem('dataBill');
+        return dataBill ? JSON.parse(dataBill):[];
+    });
+    const [product,setProduct] =useState(""); // sản phẩm đang focus để tìm kiếm
     const [listBuy,setListBuy] = useState([])
     const [showWrapper,setShowWrapper] = useState(false) // tắt mở danh sách gợi ý hàng hóa
     const wrapper=useRef(null)    // trạng thái mở ô list bán hàng
     const [listSuggest,setListSuggest] = useState([])
-   
+    const [choicePayment,setChoicePayment] = useState("money");
    
     
     // nạp tất cả dữ liệu vào  listProduct vào localStorage 
@@ -185,9 +189,26 @@ export default function Sell(){
     }, []);
     // thông báo hiển thị thanh toán thành công
     const handlePay =()=>{
+        
+        const bill={
+            id:`HD${String(listBill.length+1).padStart(4,'0')}`, // tạo hóa đơn
+            dateTime:formatDate(Date.now(),"DD/MM/YYYY HH:mm:ss"), // thời gian hiện tại
+            seller:"admin",
+            payment:choicePayment==="bank"?"Chuyển khoản":"Tiền mặt",
+            total:total, // thằng này total được tính từ hàm reduce  
+            productArr:listBuy
+        }
+        setListBill((prev) => {
+            const updated = [...prev, bill];
+            // lưu localStorage với danh sách mới nhất
+            localStorage.setItem('dataBill', JSON.stringify(updated));
+            return updated;
+        });
+
         alert("Bạn đã thanh toán đơn hàng")
         setListBuy([])
     }
+    console.log(listBuy)
     return(
         <div className="sell">
             <div className='sell-ctn' >
@@ -214,10 +235,9 @@ export default function Sell(){
                                 key={item.code}
                                 
                                 onClick={() => {
-                                    console.log("Đã gọi click tới các item") // vẫn đang chạy
                                     handleAddProduct(item);
                                     setShowWrapper(false);  
-                                    setProduct("")
+                                   setProduct("")
                                 }}
                             >
                                 <p>{item.code}</p>
@@ -263,7 +283,7 @@ export default function Sell(){
                             </li>
                         ))}
                     </ul>
-                    <InforBill totalSum={total} payed={handlePay}/>
+                    <InforBill totalSum={total} payed={handlePay} choicePay={choicePayment} handleChoicePay={setChoicePayment}/>
                 </div>
 
             </div>

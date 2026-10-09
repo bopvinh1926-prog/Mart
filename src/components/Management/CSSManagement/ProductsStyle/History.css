@@ -1,6 +1,7 @@
 /* ==========================================
    RESET & LAYOUT CHÍNH
    ========================================== */
+   
    .history {
     width: 100%;
     
@@ -79,15 +80,22 @@
     grid-template-columns: 1.5fr 2fr 2fr 1.5fr 40px; /* Cột cuối cùng chừa chỗ cho mũi tên */
     align-items: center;
     padding: 12px 16px;
-    background-color: #f8fafc;
+    
     border-radius: 8px;
     list-style: none;
     margin: 0;
     font-weight: 600;
-    color: #4b5563;
+    
     font-size: 0.9rem;
     border: 1px solid #e5e7eb;
+    background-color:#4078b4;
+    color: #ffffff;
   }
+  .bill-row{
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr !important; 
+  }
+  
+  
   
   /* Định dạng các cột dữ liệu */
   .col-staff,
@@ -96,7 +104,9 @@
   .col-status {
     padding: 0 8px;
   }
-  
+  .col{
+    padding: 0 8px;
+  }
   /* Badge Trạng thái */
   .badge {
     display: inline-block;
@@ -126,9 +136,7 @@
     transition: border-color 0.2s ease;
   }
   
-  .history-details[open] {
-    border-color: #2563eb;
-  }
+  
   
   /* Cấu trúc dòng Summary */
   .history-summary {
@@ -153,7 +161,7 @@
   /* Dòng chứa thông tin trùng khớp kích thước với history-header */
   .history-info-row {
     display: grid;
-    grid-template-columns: 1.5fr 2fr 2fr 1.5fr;
+    grid-template-columns: 1.5fr 2fr 2fr 2fr ;
     align-items: center;
     width: 100%;
     list-style: none;
@@ -162,6 +170,7 @@
     color: #1f2937;
     font-size: 0.95rem;
   }
+  
   
   /* Biểu tượng mũi tên xoay */
   .expand-icon {
@@ -182,17 +191,24 @@
   /* ==========================================
      BẢNG NỘI DUNG MỞ RỘNG (TABLE)
      ========================================== */
+  .item-table-history tbody{
+    margin-top: 100px;
+    outline: 1px solid gray;
+  }
   .table-wrapper {
-   
+    margin-top: 15px;
     background-color: #f9fafb;
     border-top: 1px solid #e5e7eb;
     overflow-x: auto;
   }
-
+  .table-header-row th{
+    background-color:#374c63;
+    color: #ffffff;
+  }
   .item-table-history {
     width: 100%;
     border-collapse: collapse;
-    background-color: #ffffff;
+    
     border-radius: 6px;
     overflow: hidden;
     border: 1px solid #e5e7eb;
@@ -210,6 +226,8 @@
   
   .table-row {
     border-bottom: 1px solid #f3f4f6;
+    
+    
   }
   
   .table-row:last-child {
@@ -221,6 +239,7 @@
     color: #1f2937;
     font-size: 0.9rem;
     vertical-align: middle;
+    border: 1px solid black;
   }
   
   /* Nút xóa trong bảng */
@@ -313,5 +332,3 @@
 .page-input {
   -moz-appearance: textfield; /* Dành cho trình duyệt Firefox */
 }
-
-  

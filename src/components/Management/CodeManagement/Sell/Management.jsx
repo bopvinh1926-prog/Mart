@@ -1,5 +1,6 @@
 import Menu from './Menu'
 import Sell from './Sell'
+import Bill from '../Bill/Bill'
 import Products from '../Products/Products'
 import '../../CSSManagement/Management.css'
 
@@ -22,6 +23,9 @@ export default function Management({onLogout}){
                 )}
                 {menuActive ==='products' &&(
                     <Products/>
+                )}
+                {menuActive ==='checkBill' &&(
+                    <Bill/>
                 )}
                 
             </div>

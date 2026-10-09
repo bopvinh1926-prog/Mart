@@ -2,10 +2,7 @@
 import '../../CSSManagement/InforBill.css'
 import qrCode from '../../../../assets/qr.jfif'
 import { useState } from 'react'
-export default function InforBill({totalSum,payed}){
-    // cần phải quản lí riêng một cái totalSum sau khi đã giảm giá
-    
-    const [choicePay,setChoicePay] = useState("money");
+export default function InforBill({totalSum,payed,choicePay,handleChoicePay}){
     const [choiceDiscount,setChoiceDiscount] = useState(true) // true là đồng fall là phần trăm
     const [discount,setDiscount] = useState(
         {displayValue:'',rawValue:0}
@@ -113,7 +110,7 @@ export default function InforBill({totalSum,payed}){
                     name=""
                     id=""
                     value={choicePay}
-                    onChange={(e) => setChoicePay(e.target.value)}
+                    onChange={(e) => handleChoicePay(e.target.value)}
                 >
                     <option value="money">Tiền mặt</option>
                     <option value="bank">Chuyển Khoản</option>
