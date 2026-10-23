@@ -50,8 +50,8 @@ export default function Sell(){
     const handleListSuggest = (product) => {
         if (!product) return [];
         const keyword = product.toLowerCase().trim();
-        return PRODUCTS_SELL.filter(item => {
-            const matchCode = item.code.toLowerCase().includes(keyword);
+        return listProduct.filter(item => {
+            const matchCode = item.id.toLowerCase().includes(keyword);
             const matchName = item.name.toLowerCase().includes(keyword);
             return (matchCode || matchName)
         });
@@ -208,7 +208,7 @@ export default function Sell(){
         alert("Bạn đã thanh toán đơn hàng")
         setListBuy([])
     }
-    console.log(listBuy)
+    console.log(listProduct)
     return(
         <div className="sell">
             <div className='sell-ctn' >
@@ -232,7 +232,7 @@ export default function Sell(){
                         return(
                             <li
                                 className='product-item'
-                                key={item.code}
+                                key={item.id}
                                 
                                 onClick={() => {
                                     handleAddProduct(item);
@@ -240,7 +240,8 @@ export default function Sell(){
                                    setProduct("")
                                 }}
                             >
-                                <p>{item.code}</p>
+                                
+                                <p>{item.id}</p>
                                 <p>{item.name}</p>
                             </li>
                     
@@ -254,7 +255,7 @@ export default function Sell(){
                             <li  className='product' key={index}>
                                 <p>{index + 1}</p>
                                 <button className='delete-product-button' onClick={() => handleDeleteProduct(item)}>🗑️</button>
-                                <p className='item-code'>{item.code}</p>
+                                <p className='item-code'>{item.id}</p>
                                 <p className='item-name'>{item.name}</p>
                                 <div className='quantity-control'>  
                                     <input

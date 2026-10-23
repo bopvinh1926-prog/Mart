@@ -3,9 +3,12 @@ import '../../CSSManagement/ProductsStyle/Modal.css'
 export default function Modal({isOpen,onClose,handleCreateProducts}){
     const dialogRef = useRef(null);
     const [form,setForm] = useState(
-        {id:"",name:"",unit:"",price:""}
+        {id:"",name:"",unit:"",price:"",quantity:0}
     )
-    // thay đổi input form 
+    const listProduct = (()=>{
+        const dataProduct = localStorage.getItem('products');
+        return dataProduct ? JSON.parse(dataProduct):[]; 
+    })
     const handleChangeFormAddProduct = (e) => {
         const { name, value } = e.target;
         setForm(prev => ({
@@ -14,7 +17,28 @@ export default function Modal({isOpen,onClose,handleCreateProducts}){
         }));
     }
     
-    
+    const onSubmitCreateProducts = () => {
+        const autoID = form.id && form.id.trim()
+            ? form.id.trim()
+            : `SP${String(listProduct().length + 1).padStart(4, '0')}`.toLocaleString('en-US');
+        // Kiểm tra logic 
+        const isValid = !listProduct().some((item) => item.id === autoID);
+
+   
+        const productForm = {
+            ...form,
+            id: autoID
+        };
+        if (productForm.name && productForm.unit && productForm.price  && isValid) { // Không để trống 3 trường này
+            handleCreateProducts(productForm);
+            setForm({ id: "", name: "", unit: "", price: "", quantity: 0 });
+            alert("Thêm hàng thành công");
+            onClose();
+        }
+        else{
+            alert("K thêm đơn hàng thành công")
+        }
+    }
     useEffect(()=>{
         const dialog = dialogRef.current;
         if(!dialog) return ;
@@ -78,7 +102,11 @@ export default function Modal({isOpen,onClose,handleCreateProducts}){
                     <input id="productUnit" type="text" name="unit" value={form.unit}
                         onChange={handleChangeFormAddProduct} placeholder="Ví dụ: Cái, Hộp, Đỏ, L" className="form-input" />
                 </div>
-
+                <div className="form-group">
+                    <label  htmlFor="productQuantity" className="form-label">Số lượng</label>
+                    <input id="productQuantity" type="text" name="quantity" value={form.quantity}
+                        onChange={handleChangeFormAddProduct} placeholder="Số lượng thêm" className="form-input" />
+                </div>
                 <div className="form-group">
                     <label htmlFor="productPrice" className="form-label">Giá bán (Đồng)</label>
                     <input id="productPrice" type="number" value={form.price}
@@ -86,7 +114,7 @@ export default function Modal({isOpen,onClose,handleCreateProducts}){
                 </div>
 
                 <div className="form-actions">
-                    <button type="button"  className="btn-submit" onClick={()=>handleCreateProducts(form)}>Thêm sản phẩm</button>
+                    <button type="button"  className="btn-submit" onClick={onSubmitCreateProducts}>Thêm sản phẩm</button>
                 </div>
             </form>
 

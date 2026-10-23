@@ -3,7 +3,7 @@ import Modal from "./Modal.jsx";
 import "../../CSSManagement/ProductsStyle/Products.css";
 import GeneralInforProducts from "./GeneralInforProducts";
 import History from "./History";
-import {PRODUCTS} from '../../../../data/PRODUCTS.js' ;
+import { PRODUCTS_SELL } from "../../../../data/PRODUCTS_SELL.JS";
 
 export default function Products() {
     const [openModal,setOpenModal] = useState(false);
@@ -15,7 +15,7 @@ export default function Products() {
     
     const [products,setProducts] = useState(()=>{
         const dataProduct = localStorage.getItem('products');
-        return dataProduct ? JSON.parse(dataProduct):PRODUCTS ; 
+        return dataProduct ? JSON.parse(dataProduct):PRODUCTS_SELL ; 
     })
     // 
     const handleCreateProductsList = (item)=>{
@@ -145,8 +145,13 @@ export default function Products() {
             return updatedProducts;
         });
     };
-    
-   console.log(products.length)
+    const handleDeleteProductList = (prd) => {
+        const newProducts = products.filter((item) => item.id !== prd.id);
+        setProducts(newProducts);
+        handleDeleteTableProducts(prd.id);
+        localStorage.setItem('products',JSON.stringify(newProducts));
+    };
+   console.log(products )
 
     return (
         <div className="products-container">
@@ -276,7 +281,13 @@ export default function Products() {
                                                 <button className="btn-delete" onClick={() => handleDeleteTableProducts(item.id)}>
                                                     Xóa
                                                 </button>
+                                                <button className="btn-delete" 
+                                                    onClick={()=>handleDeleteProductList(item)}
+                                                >
+                                                    Xóa sản phẩm
+                                                </button>
                                             </td>
+                                            
                                         </tr>
                                     ))}
                                     {Object.keys(itemEdit).length === 0 && (

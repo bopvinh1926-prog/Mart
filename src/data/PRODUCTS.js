@@ -56,4 +56,4 @@ export const PRODUCTS = [
     { id: "SP055", name: "Phô mai Con Bò Cười (Hộp 16 miếng)", unit: "Hộp", quantity: 3, price: 68000 },
     { id: "SP056", name: "Kem Merino ốc quế dâu (100ml)", unit: "Cây", quantity: 10, price: 15000 }
 ];
-// xóa total 
+// sau này thì thêm thuộc tính type 
