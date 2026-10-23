@@ -192,7 +192,7 @@ export default function Sell(){
         
         const bill={
             id:`HD${String(listBill.length+1).padStart(4,'0')}`, // tạo hóa đơn
-            dateTime:formatDate(Date.now(),"DD/MM/YYYY HH:mm:ss"), // thời gian hiện tại
+            dateTime:formatDate(Date.now(),"YYYY/MM/DD HH:mm:ss"), // thời gian hiện tại
             seller:"admin",
             payment:choicePayment==="bank"?"Chuyển khoản":"Tiền mặt",
             total:total, // thằng này total được tính từ hàm reduce  

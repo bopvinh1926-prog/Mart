@@ -1,210 +1,341 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import './Summary.css';
 
-function ProductList({ productSummary }) {
-  const keys = Object.keys(productSummary);
-  if (keys.length === 0) {
-    return (
-      <div className="summary-no-products">
-        Chưa có hàng hóa nào được bán ngày này.
-      </div>
-    );
-  }
-  return (
-    <ul className="summary-product-list">
-      {keys.map((key) => (
-        <li key={key}>
-          {productSummary[key].name}: <strong>{productSummary[key].quantity}</strong>
-        </li>
-      ))}
-    </ul>
-  );
+const sampleBills = [
+  {
+    id: 'HD003',
+    seller: 'Lê Văn Cường',
+    dateTime: `${new Date().toISOString().slice(0, 7)}-01T08:15:00`, 
+    total: 120000,
+    productArr: [
+      { name: 'Trà sữa trân châu', quantity: 2, price: 45000 },
+      { name: 'Bánh ngọt', quantity: 1, price: 30000 },
+    ],
+  },
+  {
+    id: 'HD004',
+    seller: 'Phạm Thị Dung',
+    dateTime: `${new Date().toISOString().slice(0, 7)}-02T10:20:00`,
+    total: 115000,
+    productArr: [
+      { name: 'Sinh tố bơ', quantity: 1, price: 55000 },
+      { name: 'Cà phê đen', quantity: 2, price: 30000 },
+    ],
+  },
+  {
+    id: 'HD005',
+    seller: 'Nguyễn Văn An',
+    dateTime: `${new Date().toISOString().slice(0, 7)}-03T11:45:00`,
+    total: 120000,
+    productArr: [
+      { name: 'Nước ép cam', quantity: 3, price: 40000 },
+    ],
+  },
+  {
+    id: 'HD006',
+    seller: 'Trần Thị Bình',
+    dateTime: `${new Date().toISOString().slice(0, 7)}-05T13:10:00`,
+    total: 140000,
+    productArr: [
+      { name: 'Trà đào', quantity: 2, price: 50000 },
+      { name: 'Cà phê sữa', quantity: 1, price: 40000 },
+    ],
+  },
+  {
+    id: 'HD007',
+    seller: 'Hoàng Văn Em',
+    dateTime: `${new Date().toISOString().slice(0, 7)}-06T14:30:00`,
+    total: 145000,
+    productArr: [
+      { name: 'Bánh mì', quantity: 2, price: 35000 },
+      { name: 'Cà phê rang xay', quantity: 1, price: 75000 },
+    ],
+  },
+  {
+    id: 'HD008',
+    seller: 'Đặng Thị Hoa',
+    dateTime: `${new Date().toISOString().slice(0, 7)}-08T16:00:00`,
+    total: 120000,
+    productArr: [
+      { name: 'Sinh tố dâu', quantity: 1, price: 60000 },
+      { name: 'Bánh ngọt', quantity: 2, price: 30000 },
+    ],
+  },
+  {
+    id: 'HD009',
+    seller: 'Lê Văn Cường',
+    dateTime: `${new Date().toISOString().slice(0, 7)}-09T18:20:00`,
+    total: 100000,
+    productArr: [
+      { name: 'Trà chanh', quantity: 4, price: 25000 },
+    ],
+  },
+  {
+    id: 'HD010',
+    seller: 'Phạm Thị Dung',
+    dateTime: `${new Date().toISOString().slice(0, 7)}-10T19:45:00`,
+    total: 125000,
+    productArr: [
+      { name: 'Cà phê sữa', quantity: 2, price: 40000 },
+      { name: 'Nước ép táo', quantity: 1, price: 45000 },
+    ],
+  },
+  {
+    id: 'HD011',
+    seller: 'Nguyễn Văn An',
+    dateTime: `${new Date().toISOString().slice(0, 7)}-11T07:30:00`,
+    total: 130000,
+    productArr: [
+      { name: 'Trà đào', quantity: 1, price: 50000 },
+      { name: 'Bánh mì', quantity: 1, price: 35000 },
+      { name: 'Trà sữa trân châu', quantity: 1, price: 45000 },
+    ],
+  },
+  {
+    id: 'HD012',
+    seller: 'Trần Thị Bình',
+    dateTime: `${new Date().toISOString().slice(0, 7)}-15T09:15:00`,
+    total: 110000,
+    productArr: [
+      { name: 'Sinh tố bơ', quantity: 2, price: 55000 },
+    ],
+  },
+  {
+    id: 'HD013',
+    seller: 'Hoàng Văn Em',
+    dateTime: `${new Date().toISOString().slice(0, 7)}-16T10:50:00`,
+    total: 90000,
+    productArr: [
+      { name: 'Cà phê đen', quantity: 3, price: 30000 },
+    ],
+  },
+  {
+    id: 'HD014',
+    seller: 'Đặng Thị Hoa',
+    dateTime: `${new Date().toISOString().slice(0, 7)}-18T12:00:00`,
+    total: 110000,
+    productArr: [
+      { name: 'Nước ép lựu', quantity: 1, price: 60000 },
+      { name: 'Trà chanh', quantity: 2, price: 25000 },
+    ],
+  },
+  {
+    id: 'HD015',
+    seller: 'Lê Văn Cường',
+    dateTime: `${new Date().toISOString().slice(0, 7)}-20T14:10:00`,
+    total: 150000,
+    productArr: [
+      { name: 'Bánh ngọt', quantity: 3, price: 30000 },
+      { name: 'Sinh tố dâu', quantity: 1, price: 60000 },
+    ],
+  },
+  {
+    id: 'HD016',
+    seller: 'Phạm Thị Dung',
+    dateTime: `${new Date().toISOString().slice(0, 7)}-22T16:30:00`,
+    total: 150000,
+    productArr: [
+      { name: 'Cà phê rang xay', quantity: 2, price: 75000 },
+    ],
+  },
+  {
+    id: 'HD017',
+    seller: 'Nguyễn Văn An',
+    dateTime: `${new Date().toISOString().slice(0, 7)}-25T20:00:00`,
+    total: 205000,
+    items: [
+      { name: 'Trà sữa trân châu', quantity: 3, price: 45000 },
+      { name: 'Bánh mì', quantity: 2, price: 35000 },
+    ],
+  },
+];
+const readBills=()=>{
+	const stored = localStorage.getItem('dataBill');
+	return stored?JSON.parse(stored):sampleBills; // khi đưa vào dự án thì thay thế  bằng null hoặc là mảng rỗng
 }
+// sau này chúng ta phải cập nhật theo dữ liệu nhân viên chứ kp lấy dữ liệu nơi Hóa đơn
 
-export default function Summary() {
-  // 1. State quản lý ngày được chọn (mặc định lấy ngày hiện tại YYYY-MM-DD)
-  const [selectedDate, setSelectedDate] = useState(() => {
-    const today = new Date();
-    return today.toISOString().split('T')[0]; // Dạng "2026-10-08"
-  });
+const getBillDate = (bill) => bill?.dateTime ?? '';
 
-  // 2. State quản lý danh sách hóa đơn lấy từ localStorage
-  const [dataBill, setDataBill] = useState([]);
+// giải thích tí về các lệnh dưới đây
+// nếu bill khác null thì truy cập thuộc tính nếu bill là null thì trả về là rỗng
+/*2. 
+	• Nếu không có dấu ?, trong trường hợp bill bị null, chương trình sẽ báo lỗi ngay lập tức: 
+  Cannot read properties of null (reading 'productArr').
+  ==> có thể dùng cacash viết này return (bill && bill.productArr) ? bill.productArr : [];
+*/
+const getBillItems = (bill) => bill?.productArr ?? bill?.items ?? [];
 
-  // Thêm state để chọn màn (doanh thu hoặc sản phẩm đã bán)
-  const [tab, setTab] = useState('revenue'); // 'revenue' hoặc 'products'
+const getBillRevenue = (bill) => {
+  return bill && bill.total?bill.total:0
+};
 
-  // Hàm đọc dữ liệu từ localStorage
-  const loadDataBill = () => {
-    try {
-      const stored = localStorage.getItem('dataBill');
-      if (stored) {
-        setDataBill(JSON.parse(stored));
-      } else {
-        setDataBill([]);
-      }
-    } catch (error) {
-      console.error("Lỗi khi đọc dataBill từ localStorage:", error);
-      setDataBill([]);
-    }
-  };
+const getItemName = (item) => item?.name??""
+ 
 
-  // Đọc localStorage khi component được mount
-  useEffect(() => {
-    // Tránh gọi setState trực tiếp khi mount - chỉ gọi khi event fire hoặc qua nút bấm
-    loadDataBill();
+const getItemQuantity = (item) =>
+  Number(item?.buyQuantity) || 0;
 
-    const handleStorageChange = () => loadDataBill();
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-    // eslint-disable-next-line
-  }, []);
+const getItemPrice = (item) =>
+  Number(item?.price) || 0;
 
-  // Chuyển đổi định dạng ngày từ YYYY-MM-DD sang DD/MM/YYYY để so sánh với dateTime
-  const formattedSelectedDate = useMemo(() => {
-    if (!selectedDate) return '';
-    const [year, month, day] = selectedDate.split('-');
-    return `${day}/${month}/${year}`; // Dạng "08/10/2026"
-  }, [selectedDate]);
+// hàm này có thể k cần
+const formatCurrency = (amount) =>
+  new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
 
-  // 3. Tính tổng tiền, số lượng đơn hàng và tổng số hàng hóa đã bán theo ngày được chọn
-  const { totalRevenue, billCount, productSummary } = useMemo(() => {
-    if (!formattedSelectedDate || !Array.isArray(dataBill)) {
-      return { totalRevenue: 0, billCount: 0, productSummary: {} };
-    }
+function App() {
+  const today = new Date();
+  /* 2020-09  == getDate là lấy ra số ngày trong tháng*/
+  const todayDate = `${today.getFullYear()}/${String(today.getMonth() + 1).padStart(2, '0')}/${String(today.getDate()).padStart(2, '0')}`;
+  const [dateStart, setDateStart] = useState(todayDate); // dùng state quản lí ngày bắt đầu và kết thúc mặc định ln là ca của
+  const [dateEnd, setDateEnd] = useState(todayDate);
+  const [selectedEmployee, setSelectedEmployee] = useState('all');
+  const [bills] = useState(readBills); // đây là đàng đọc bill
+  // lấy danh sách các hoát đơn mà nhân  viên bán
+  const employees = useMemo(
+    () => [...new Set(bills.map((bill) => bill?.seller).filter(Boolean))]
+      .sort((a, b) => a.localeCompare(b, 'vi')),
+    [bills],
+  );
+  // hàm trả về hóa đơn cùng ngày nằm từ ngày bắt đầu tới ngày kết thúc
+  const rangeBills = useMemo(
+    // trên sampBills dateTime: `${new Date().toISOString().slice(0, 7)}-01T08:15:00`, chữ 01 chính là ngày và đoạn sau là thời gian
+    () => bills.filter((bill) => {
+      const date = String(getBillDate(bill).slice(0,10));
+      
+      return date && date >= dateStart && date <= dateEnd; 
+    }),
+    [bills, dateStart, dateEnd],
+  );
+  // lấy bill theo nhân viên 
+  const selectedBills = useMemo(
+    () => selectedEmployee === 'all'
+      ? rangeBills
+      : rangeBills.filter((bill) => bill?.seller === selectedEmployee),
+    [rangeBills, selectedEmployee],
+  );
 
-    let sum = 0;
-    let count = 0;
-    // { [productNameOrId]: { name, quantity } }
-    let productsMap = {};
+  // lấy hóa đơn theo ngày và nhân viên đã chọn để tính tổng
+  const total = useMemo(
+    () => selectedBills.reduce((sum, bill) => sum + getBillRevenue(bill), 0),
+    [selectedBills],
+  );
+  
+  // danh sách những hàng hóa đã bán được
+  const soldProducts = useMemo(() => {
+    const productMap = new Map();
 
-    dataBill.forEach((bill) => {
-      // dateTime có dạng "08/10/2026 16:44:56" -> lấy chuỗi ngày trước khoảng trắng
-      const billDate = bill.dateTime ? bill.dateTime.split(' ')[0] : '';
-
-      if (billDate === formattedSelectedDate) {
-        sum += Number(bill.total) || 0;
-        count += 1;
-
-        // Gom thông tin sản phẩm đã bán
-        if (Array.isArray(bill.cart)) {
-          bill.cart.forEach(item => {
-            const key = item.name || item.id;
-            if (key) {
-              if (!productsMap[key]) {
-                productsMap[key] = {
-                  name: item.name || `SP #${item.id}`,
-                  quantity: Number(item.quantity) || 0
-                };
-              } else {
-                productsMap[key].quantity += Number(item.quantity) || 0;
-              }
-            }
-          });
-        }
-      }
+    selectedBills.map((bill) => {
+      getBillItems(bill).map((item) => {
+        const name = getItemName(item);
+        const quantity = getItemQuantity(item);
+        const price = getItemPrice(item);
+        // tạo ra một đối tượng mảng nếu có r thì tiếp tục cập nhật
+        //const current = productMap.get(name) ? { name, quantity: 0, revenue: 0 }:productMap.get(name);
+        const current = productMap.get(name) ?productMap.get(name): { name, quantity: 0, revenue: 0 }; 
+        // có thể sử dụng 2 cách gghi
+        current.quantity += quantity;
+        current.revenue += quantity * price;
+        productMap.set(name, current); // set hàm map 
+      });
     });
 
-    return { totalRevenue: sum, billCount: count, productSummary: productsMap };
-  }, [dataBill, formattedSelectedDate]);
-
-  // Tạo giao diện menu nhỏ chọn giữa Doanh thu & Danh sách đã bán
+    return Array.from(productMap.values()).sort((a, b) => b.quantity - a.quantity); // chuyển đổi về mảng và sắp xếp
+  }, [selectedBills]);
+  console.log(selectedBills)
   return (
-    <div className="summary-main-bg">
-      <div className="summary-container">
-        <h2 className="summary-title">Thống Kê</h2>
-        
-        <div style={{display: 'flex', gap: 10, marginBottom: 18}}>
-          <button
-            className={tab === 'revenue' ? 'summary-menu-btn active' : 'summary-menu-btn'}
-            onClick={() => setTab('revenue')}
-            style={{
-              flex: 1,
-              background: tab === 'revenue' ? 'linear-gradient(90deg, #0284c7 55%, #38bdf8 100%)' : '#f0f9ff',
-              color: tab === 'revenue' ? '#fff' : '#0284c7',
-              border: 'none',
-              borderRadius: '5px 0 0 5px',
-              padding: '10px 0',
-              fontWeight: '600',
-              cursor: 'pointer',
-              fontSize: 16,
-              transition: "background 0.17s"
-            }}
-          >
-            Doanh Thu
-          </button>
-          <button
-            className={tab === 'products' ? 'summary-menu-btn active' : 'summary-menu-btn'}
-            onClick={() => setTab('products')}
-            style={{
-              flex: 1,
-              background: tab === 'products' ? 'linear-gradient(90deg, #0284c7 60%, #38bdf8 100%)' : '#f0f9ff',
-              color: tab === 'products' ? '#fff' : '#0284c7',
-              border: 'none',
-              borderRadius: '0 5px 5px 0',
-              padding: '10px 0',
-              fontWeight: '600',
-              cursor: 'pointer',
-              fontSize: 16,
-              transition: "background 0.17s"
-            }}
-          >
-            Hàng hóa đã bán
-          </button>
+    <main className="summary-page">
+      <header className="page-header">
+        <div>
+          <p className="eyebrow">BÁO CÁO BÁN HÀNG</p>
+          <h1>Summary</h1>
+          <p className="page-description">Theo dõi doanh thu và hàng hóa đã bán theo thời gian.</p>
         </div>
-
-        {/* Selector chọn ngày */}
-        <div className="summary-date-selector">
-          <label className="summary-label">Chọn ngày:</label>
-          <input
-            type="date"
-            value={selectedDate}
-            onChange={(e) => setSelectedDate(e.target.value)}
-            className="summary-input"
-          />
+        <div className="month-picker">
+          <label className="month-control">
+            <span>Từ ngày</span>
+            <input
+              type="date"
+              value={dateStart}
+              max={dateEnd}
+              onChange={(event) => setDateStart(event.target.value)}
+            />
+          </label>
+          <label className="month-control">
+            <span>Đến ngày</span>
+            <input
+              type="date"
+              value={dateEnd}
+              min={dateStart}
+              onChange={(event) => setDateEnd(event.target.value)}
+            />
+          </label>
         </div>
+      </header>
 
-        {tab === 'revenue' && (
-          <>
-            {/* Kết quả tổng tiền */}
-            <div className="summary-result-box">
-              <div className="summary-date">
-                Ngày: <strong>{formattedSelectedDate}</strong>
-              </div>
-              <div className="summary-count">
-                Số lượng đơn: <strong>{billCount} đơn</strong>
-              </div>
-              <hr className="summary-hr" />
-              <div className="summary-total">
-                Tổng tiền: <span className="summary-total-value">{totalRevenue.toLocaleString('vi-VN')} VNĐ</span>
-              </div>
-            </div>
-            <button
-              onClick={loadDataBill}
-              className="summary-refresh-btn"
-            >
-              Làm mới dữ liệu từ LocalStorage
-            </button>
-          </>
-        )}
+      <section className="employee-filter" aria-label="Lọc theo nhân viên">
+        <label htmlFor="employee-select">Nhân viên bán</label>
+        <select
+          id="employee-select"
+          value={selectedEmployee}
+          onChange={(event) => setSelectedEmployee(event.target.value)}
+        >
+          <option value="all">Hệ thống</option>
+          {employees.map((employee) => (
+            <option key={employee} value={employee}>{employee}</option>
+          ))}
+        </select>
+      </section>
 
-        {tab === 'products' && (
-          <div className="summary-products-container">
-            <div className="summary-label summary-products-title" style={{marginBottom: 8}}>
-              Liệt kê số lượng hàng hóa đã bán:
-            </div>
-            <ProductList productSummary={productSummary} />
-            <button
-              onClick={loadDataBill}
-              className="summary-refresh-btn"
-              style={{marginTop: 12}} // để refresh khi ở tab này luôn
-            >
-              Làm mới dữ liệu từ LocalStorage
-            </button>
+      <section className="summary-card" aria-label="Tổng doanh thu">
+        <div className="revenue-icon" aria-hidden="true">₫</div>
+        <div>
+          <p className="card-label">Tổng doanh thu</p>
+          <p className="revenue-total">{total.toLocaleString('en-US')}</p>
+          <p className="card-note">Từ {dateStart} đến {dateEnd}</p>
+        </div>
+      </section>
+
+      <section className="products-section">
+        <div className="section-heading">
+          <div>
+            <h2>Hàng hóa đã bán</h2>
+            <p>Tổng hợp số lượng và doanh thu theo từng sản phẩm</p>
           </div>
-        )}
+          <span className="product-count">{soldProducts.length} sản phẩm</span>
+        </div>
 
-      </div>
-    </div>
+        <div className="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Sản phẩm</th>
+                <th>Số lượng bán</th>
+                <th>Doanh thu</th>
+              </tr>
+            </thead>
+            <tbody>
+              {soldProducts.length > 0 ? (
+                soldProducts.map((product) => (
+                  <tr key={product.name}>
+                    <td className="product-name">{product.name}</td>
+                    <td>{product.quantity}</td>
+                    <td className="product-revenue">{formatCurrency(product.revenue)}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td className="empty-state" colSpan="3">
+                    Chưa có hàng hóa được bán trong thời gian này.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
   );
 }
+
+export default App;
