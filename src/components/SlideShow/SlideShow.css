@@ -1,21 +1,70 @@
 .slideShow {
-    border: 1px solid gray;
-    width: 1000px;
+    border: none;
+    width: 50vw;
+    max-width: 900px;
+    min-width: 320px;
     height: 100vh;
+    min-height: 350px;
+    margin: 0 auto;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
-}
-.slideShow img{
-    width: 100%;
+    border-radius: 22px;
+    box-shadow: 0 6px 42px 0 rgba(31, 134, 194, 0.09), 0 2px 10px rgba(80,100,120,.08);
     overflow: hidden;
+    background: linear-gradient(120deg, #f0f9ff 15%, #e0ecff 100%);
+}
+
+/* .slideShow img {
+    width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
     position: absolute;
-    top: 0; left: 0;    
+    top: 0;
+    left: 0;
     z-index: 1;
+    opacity: 1;
+    transform: scale(1.02) translateY(0px);
+    transition: 
+        opacity 0.85s cubic-bezier(.51,.08,.32,1), 
+        transform 0.82s cubic-bezier(.7,.12,.25,1.01);
+    box-shadow: 0 2px 12px rgba(31,134,194,0.13);
+}
+.slideShow img[style*="display: none"], 
+.slideShow img:not([src]) {
+    opacity: 0 !important;
+    transform: scale(1.025) translateY(24px);
+    pointer-events: none;
+} */
+/* Mặc định TẤT CẢ ảnh bị ẩn và dịch xuống 24px */
+.slideShow img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    opacity: 0; /* An di */
+    transform: scale(1.025) translateY(24px); /* Vi tri ban dau khi an */
+    pointer-events: none;
+    transition: 
+        opacity 0.85s cubic-bezier(.51,.08,.32,1), 
+        transform 0.82s cubic-bezier(.7,.12,.25,1.01);
+    box-shadow: 0 2px 12px rgba(31,134,194,0.13);
+}
+
+/* Chỉ ảnh nào có class .active mới hiện lên và trượt về vị trí chuẩn */
+.slideShow img.active {
+    opacity: 1;
+    transform: translateX(0px);
+    pointer-events: auto;
+    transition:
+        opacity 0.85s cubic-bezier(.51,.08,.32,1),
+        transform 0.82s cubic-bezier(.7,.12,.25,1.01);
 }
 .overlay {
     position: absolute;
@@ -24,23 +73,59 @@
     width: 100%;
     height: 100%;
     z-index: 2;
-    background-color: rgba(31, 134, 194, 0.5); /* Lớp phủ đỏ mờ */
+    background: linear-gradient(
+        120deg,
+        rgba(24, 104, 176, 0.36) 20%,
+        rgba(31, 134, 194, 0.27) 60%,
+        rgba(243, 246, 252, 0.21) 100%
+    );
     pointer-events: none;
+    border-radius: 22px;
+    transition: background 0.55s;
 }
+
 .btn-group {
     width: 100%;
     display: flex;
-    gap: 20px;  
-    justify-content: space-around;
+    gap: 32px;
+    justify-content: space-between;
     align-items: center;
     position: absolute;
-    z-index: 3;
+    z-index: 5;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    pointer-events: none;
+    padding: 0 18px;
 }
-.btn-group button{
-    width:50px;
-    height: 50px;
+
+.btn-group button {
+    width: 54px;
+    height: 54px;
     border-radius: 50%;
     border: none;
-    background-color:none;
-    cursor: pointer;    
+    background: rgba(31, 134, 194, 0.32);
+    color: #fff;
+    font-size: 2.05rem;
+    font-weight: 600;
+    box-shadow: 0 2px 10px rgba(31, 134, 194, 0.15);
+    cursor: pointer;
+    outline: none;
+    position: relative;
+    transition:
+        box-shadow 0.15s,
+        transform 0.13s,
+        background 0.23s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+    user-select: none;
+}
+.btn-group button:hover, .btn-group button:focus-visible {
+    background: linear-gradient(90deg,#2563eb 15%,#1e293b 90%);
+    color: #ffde5a;
+    transform: scale(1.09);
+    box-shadow: 0 4px 18px rgba(31, 134, 194, 0.21);
+    border: none;
 }

@@ -135,16 +135,20 @@ export default function InforBill({totalSum,payed,choicePay,handleChoicePay}){
                             <img src={qrCode} alt="" />
                         </div>  
                     )}
+                    
                 </div>
-                <p>Tiền thừa trả khách {handleExcessMoney()} </p>
+                {choicePay =="money" && (
+                    <p>Tiền thừa trả khách {handleExcessMoney()} </p>
+                )}
                 <button className='payment' 
-                    onClick={()=>{
-                        payed();
-                        setDiscount({ displayValue: '', rawValue: 0 });
-                        setSelectedCashSug(null);
-                   
-                    } } 
+                        onClick={()=>{
+                            payed();
+                            setDiscount({ displayValue: '', rawValue: 0 });
+                            setSelectedCashSug(null);
+                    
+                        } } 
                 >Thanh toán</button>
+                
             </div>
         </div>
     )

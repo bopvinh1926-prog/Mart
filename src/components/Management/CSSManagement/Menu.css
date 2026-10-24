@@ -1,77 +1,94 @@
 @keyframes shrink-nav {
     to {
-      padding: 10px 0; /* Thu nhỏ khoảng cách trên dưới khi cuộn */
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Thêm đổ bóng */
+        padding: 8px 0; /* Thu nhỏ khoảng cách trên dưới khi cuộn */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
-  }
+}
 
 .nav-bar {
     display: flex;
     align-items: center;
-    justify-content: space-evenly   ;
+    justify-content: space-between;
     background-color: #1e293b;
-    padding: 0 80px;
-    position: relative;
-    height: 65px;
+    padding: 12px 60px;
     position: sticky;
     top: 0;
     z-index: 10;
-    padding: 20px 0;
+    height: 80px;
     animation: shrink-nav linear both;
-    animation-timeline: scroll(root); /* Theo dõi thanh cuộn của toàn trang web */
-    animation-range: 0px 150px;    
+    animation-timeline: scroll(root);
+    animation-range: 0px 150px;
 }
+
 .logo {
-   width: 200px;
+    width: 300px;
+    transition: width 0.23s;
+    /* Responsive width for logo container */
+    @media (max-width: 991px) {
+        width: 95px;
+    }
+    @media (max-width: 768px) {
+        width: 72px;
+    }
 }
 .logo img{
     width: 100%;
 }
 .hambuger {
     display: none;
-    font-size: 28px;
+    font-size: 26px;
 }
 .menu {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 30px;
     position: relative;
     z-index: 2;
     transition: all 0.3s;
-    
 }
 .menu li {
     list-style: none;
-   
 }
 .menu li a {
     color: white;
     text-decoration: none;
-    font-size: 16px;
-    padding: 8px 12px;
-    border-radius: 6px;
+    font-size: 18px;
+    padding: 1px 8px;
+    border-radius: 5px;
     transition: background 0.15s;
-
+    display: flex;
+    align-items: center;
+    min-width: 62px;
+    justify-content: center;
 }
 .menu li a:hover {
     background: rgba(255,255,255,0.07);
 }
-.item-active-menu{
+.item-active-menu {
     background: rgba(255, 255, 255, 0.562);
-    padding: 8px 4px;
-    border-radius: 10px;
+    padding: 5px 4px;
+    border-radius: 7px;
+    
 }
-@media(max-width:991px){
+
+@media (max-width:991px){
+    .nav-bar {
+        padding: 7px 10px;
+        height: 42px;
+    }
+    .logo { width: 95px; }
     .menu li a{
-        font-size: 10px;
-        display: flex;
-        flex-wrap: nowrap;
+        font-size: 8.5px;
+        padding: 5.5px 2px;
+        min-width: 40px;
+        max-width: 92px;
     }
 }
+
 @media (max-width: 768px) {
     .nav-bar {
-        padding: 0 18px;
-        height: 57px;
+        padding: 0 8px;
+        height: 41px;
     }
     .hambuger {
         display: block;
@@ -85,7 +102,7 @@
         gap: 0;
         position: absolute;
         left: 0;
-        top: 57px;
+        top: 41px;
         width: 100vw;
         background: #1e293b;
         padding: 0;
@@ -101,11 +118,12 @@
     .menu li a {
         display: block;
         text-align: center;
-        padding: 20px 0;
+        padding: 16px 0;
         width: 100%;
         border-top: 1px solid #273043;
         color: #f1f5fa;
-        font-size: 18px;
+        font-size: 16px;
+        min-width: unset;
     }
     .menu li:first-child a {
         border-top: none;
