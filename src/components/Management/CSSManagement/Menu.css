@@ -52,13 +52,13 @@
 .menu li a {
     color: white;
     text-decoration: none;
-    font-size: 18px;
+    font-size: 14px;
     padding: 1px 8px;
     border-radius: 5px;
     transition: background 0.15s;
     display: flex;
     align-items: center;
-    min-width: 62px;
+    min-width: 80px;
     justify-content: center;
 }
 .menu li a:hover {
@@ -78,9 +78,9 @@
     }
     .logo { width: 95px; }
     .menu li a{
-        font-size: 8.5px;
+        font-size: 13px;
         padding: 5.5px 2px;
-        min-width: 40px;
+        
         max-width: 92px;
     }
 }
@@ -122,7 +122,7 @@
         width: 100%;
         border-top: 1px solid #273043;
         color: #f1f5fa;
-        font-size: 16px;
+        font-size: 12px;
         min-width: unset;
     }
     .menu li:first-child a {

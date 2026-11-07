@@ -3,20 +3,32 @@ import Modal from "./Modal.jsx";
 import "../../CSSManagement/ProductsStyle/Products.css";
 import GeneralInforProducts from "./GeneralInforProducts";
 import History from "./History";
+import ManagementProducts from "../ManagementProducts/ManagementProducts.jsx";
 import { PRODUCTS_SELL } from "../../../../data/PRODUCTS_SELL.JS";
 
 export default function Products() {
     const [openModal,setOpenModal] = useState(false);
     const [selectedSupplier,setSelectedSupplier] = useState(); /// nhà cung cấp được chọn
     const [groupSupplier,setGroupSupplier]  = useState([]);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true); // true là mở bên Hàng hóa False là mở bên nhập hàng
-    const [itemEdit, setItemEdit] = useState({});
+    const [isSidebarOpen, setIsSidebarOpen] = useState("editProducts"); // true là mở bên Hàng hóa False là mở bên nhập hàng
+    const [itemEdit, setItemEdit] = useState([]); // sửa lại thành mảng
     //  cho thằng này thành localStorage 
     
     const [products,setProducts] = useState(()=>{
         const dataProduct = localStorage.getItem('products');
         return dataProduct ? JSON.parse(dataProduct):PRODUCTS_SELL ; 
     })
+    // mỗi khi xóa hàng hóa trong ManagementProducts
+    // useEffect(()=>{
+    //     const handleStorageChange=(e)=>{
+    //         if(e.key =='products'){
+    //             const updProducts = JSON.parse(e.newValue || '[]');
+    //             setProducts(updProducts);
+    //         }
+    //     }
+    //     window.addEventListener('storage',handleStorageChange);
+    //     return () => window.removeEventListener('storage', handleStorageChange);
+    // },[])
     // 
     const handleCreateProductsList = (item)=>{
         setProducts((prev)=>{
@@ -27,27 +39,29 @@ export default function Products() {
     }
     // Khi thêm sản phẩm vào itemEdit => copy thuộc tính từ sản phẩm selected
     const handleAddProductEdit = (prd) => {
-        setItemEdit((prev) => ({
-            ...prev,
-            [prd.id]: {
-                inputQuantity: 1,
-                inputPrice: prd.price,
-                productCode:prd.id,
-                productName:prd.name,
-                productUnit:prd.unit,
-                total:prd.price
-                
-                // Không nên dùng code:prd.code vì không có field code ở initialProducts
-                // Có thể truyền các field khác nếu cần thiết về sau
-            }
-        }));
+        console.log(prd+" prd")
+        setItemEdit((prev)=>{
+            return[
+                ...prev,
+                {
+                    id:prd.id,
+                    name:prd.name,
+                    unit:prd.unit,
+                    inputQuantity:1,
+                    price:prd.price,
+                    total: 1* prd.price
+                }   
+
+            ]
+        })
     };
+    
 
     // Khi thay đổi input nhập số lượng, giá
     const handleChangeInputItem = (e, id) => {
         const { name, value } = e.target;
         let finalValue;
-        if (name === "inputPrice") {
+        if (name === "price") {
             // Nếu là giá, cần cho phép nhập tiền, strip , nếu dán số đã có dấu phẩy
             const cleanValue = value.replace(/,/g, '');
             finalValue = cleanValue === "" ? "" : (isNaN(Number(cleanValue)) ? 0 : Number(cleanValue));
@@ -59,16 +73,21 @@ export default function Products() {
         }
         
         setItemEdit((prev) => {
-            const price = name ==='inputPrice'? value:prev[id].inputPrice;
-            const quantity = name ==='inputQuantity' ? value : prev[id].inputQuantity;
-
-            return  {
-            ...prev,
-            [id]: {
-                ...prev[id],
-                [name]: finalValue, total:price*quantity
-            }
-        }});
+            return prev.map((item) => {
+                if (item.id !== id) {
+                    return item;
+                }
+                const price = name === "price" ? Number(finalValue) || 0 : item.price;
+                const quantity = name === "inputQuantity" ? Number(finalValue) || 0 : item.inputQuantity;
+                
+                return{
+                    ...item,
+                    price:price,
+                    inputQuantity: quantity,
+                    total: price * quantity,
+                };
+            });
+        });
     };
 
     // Lịch sử nhập hàng: mỗi lần nhấn lưu thì chúng ta lưu lại mảng các sản phẩm nhập gần nhất
@@ -89,17 +108,18 @@ export default function Products() {
             supplier:selectedSupplier,
             arrayItemEdit: itemEdit
         };
-
+        // thêm bước cập nhật products 
+       
         // Cập nhật lịch sử nhập hàng vào cả state và localStorage
         setHistoryImportProducts((prev) => {
             const updatedHistory = [...prev, newListHistory];
             localStorage.setItem('dataHistory', JSON.stringify(updatedHistory));
             return updatedHistory;
         });
-        setItemEdit({});
+        setItemEdit([]);
         setSelectedSupplier("");
     };
-
+    console.log(itemEdit)
     // Logic hiện/ẩn list sản phẩm
     const [showList, setShowList] = useState(false);
     const [searchValue, setSearchValue] = useState("");
@@ -129,7 +149,7 @@ export default function Products() {
 
     // Danh sách sản phẩm có thể thêm (không bị chọn rồi, và filter theo tìm kiếm)
     const availableProducts = products.filter(item => {
-        const notDuplicated = !itemEdit[item.id];
+        const notDuplicated = !itemEdit.some((edit) => edit.id === item.id);
         const searchStr = searchValue.trim().toLowerCase();
         const searchInID = item.id.toLowerCase().includes(searchStr);
         const searchInNameVN = removeVietnameseTones(item.name).includes(searchStr);
@@ -139,11 +159,10 @@ export default function Products() {
 
     // Xóa 1 sản phẩm trong bảng nhập
     const handleDeleteTableProducts = (prdID) => {
-        setItemEdit((prev) => {
-            const updatedProducts = { ...prev };
-            delete updatedProducts[prdID];
-            return updatedProducts;
-        });
+        setItemEdit((prev)=>{
+            const deleteProducts = prev.filter((item)=> item.id !== prdID);
+            return deleteProducts;
+        })
     };
     const handleDeleteProductList = (prd) => {
         const newProducts = products.filter((item) => item.id !== prd.id);
@@ -151,24 +170,30 @@ export default function Products() {
         handleDeleteTableProducts(prd.id);
         localStorage.setItem('products',JSON.stringify(newProducts));
     };
-   console.log(products )
-
+    console.log(itemEdit)
     return (
         <div className="products-container">
-            <div className="sidebar">
-                <button className={isSidebarOpen ? "active" : ""} onClick={() => setIsSidebarOpen(true)}>
-                    Hàng hóa
+            <div className="sidebarMain">
+                <button className={isSidebarOpen === "addProducts" ? "active" : ""} onClick={() => setIsSidebarOpen("addProducts")}>
+                    Nhập hàng hóa
                 </button>
-                <button className={!isSidebarOpen ? "active" : ""} onClick={() => setIsSidebarOpen(false)}>
+                <button className={isSidebarOpen === "history" ? "active" : ""} onClick={() => setIsSidebarOpen("history")}>
                     Lịch sử nhập hàng
+                </button>
+                <button className={isSidebarOpen === "editProducts" ? "active" : ""} onClick={() => setIsSidebarOpen("editProducts")}>
+                    Quản lí sản phẩm
                 </button>
             </div>
 
-            {!isSidebarOpen && (
+            {isSidebarOpen === "history" && (
                 <History listHistory={historyImportProducts} />
             )}
+            {isSidebarOpen === "editProducts" && (
+                    <ManagementProducts products={products} setProducts={setProducts}  />
+            )   }
+            
 
-            {isSidebarOpen && (
+            {isSidebarOpen === "addProducts" && (
                 <div className="main-products">
                     <GeneralInforProducts 
                         handleSupplier= {setSelectedSupplier} 
@@ -235,7 +260,7 @@ export default function Products() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {products.filter(item => itemEdit[item.id] !== undefined).map((item) => (
+                                    { itemEdit.map((item)=> (
                                         <tr key={item.id}>
                                             <td className="table-th">{item.id}</td>
                                             <td className="table-th">{item.name}</td>
@@ -246,9 +271,7 @@ export default function Products() {
                                                     className="table-input input-quantity"
                                                     name="inputQuantity"
                                                     min={1}
-                                                    value={typeof itemEdit[item.id].inputQuantity === "number"
-                                                        ? itemEdit[item.id].inputQuantity
-                                                        : 0}
+                                                    value={item.inputQuantity}
                                                     onChange={(e) => handleChangeInputItem(e, item.id)}
                                                 />
                                             </td>
@@ -256,12 +279,8 @@ export default function Products() {
                                                 <input
                                                     type="text"
                                                     className="table-input input-price"
-                                                    name="inputPrice"
-                                                    value={
-                                                        itemEdit[item.id].inputPrice === 0 || itemEdit[item.id].inputPrice === ""
-                                                            ? item.price.toLocaleString('en-US')
-                                                            : Number(itemEdit[item.id].inputPrice).toLocaleString('en-US')
-                                                    }
+                                                    name="price"
+                                                    value={item.price}
                                                     onChange={(e) => handleChangeInputItem(e, item.id)}
                                                 />
                                             </td>
@@ -270,10 +289,7 @@ export default function Products() {
                                                     name="total"
                                                     type="text"
                                                     className="table-input input-total"
-                                                    value={ itemEdit[item.id].inputQuantity ===0 ?0:(
-                                                        (itemEdit[item.id].inputPrice ? +itemEdit[item.id].inputPrice : item.price) *
-                                                        (itemEdit[item.id].inputQuantity ? +itemEdit[item.id].inputQuantity : 1)
-                                                    ).toLocaleString("en-US")}
+                                                    value={item.total.toLocaleString('en-US')}
                                                     readOnly
                                                 />
                                             </td>

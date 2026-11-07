@@ -1,0 +1,559 @@
+import  { useState, useEffect, useMemo } from 'react';
+import'../../CSSManagement/ManagementProducts.css'
+
+const initialProducts = [
+  { id: "SP001", name: "Sữa tươi Vinamilk 100% (1L)", unit: "Hộp", quantity: 21, price: 32000, buyQuantity: "", category: "Sữa & chế phẩm" },
+    { id: "SP002", name: "Mì Hảo Hảo Tôm Chua Cay", unit: "Thùng", quantity: 17, price: 115000, buyQuantity: "", category: "Mì & phở" },
+    { id: "SP003", name: "Dầu ăn Tường An (1L)", unit: "Chai", quantity: 19, price: 48000, buyQuantity: "", category: "Dầu ăn" },
+    { id: "SP004", name: "Đường tinh luyện Biên Hòa (1kg)", unit: "Gói", quantity: 23, price: 26000, buyQuantity: "", category: "Gia vị" },
+    { id: "SP005", name: "Nước tương Chinsu (250ml)", unit: "Chai", quantity: 18, price: 18000, buyQuantity: "", category: "Gia vị" },
+    { id: "SP006", name: "Gạo thơm Jasmine (5kg)", unit: "Túi", quantity: 24, price: 125000, buyQuantity: "", category: "Gạo & đồ khô" },
+    { id: "SP007", name: "Nước mắm Nam Ngư 3-In-1 (750ml)", unit: "Chai", quantity: 27, price: 42000, buyQuantity: "", category: "Gia vị" },
+    { id: "SP008", name: "Hạt nêm Knorr thịt thăn (900g)", unit: "Gói", quantity: 16, price: 82000, buyQuantity: "", category: "Gia vị" },
+    { id: "SP009", name: "Muối I-ốt Vifon (500g)", unit: "Gói", quantity: 35, price: 8000, buyQuantity: "", category: "Gia vị" },
+    { id: "SP010", name: "Bột ngọt Ajinomoto (450g)", unit: "Gói", quantity: 25, price: 45000, buyQuantity: "", category: "Gia vị" },
+    { id: "SP011", name: "Tương ớt Cholimex (270g)", unit: "Chai", quantity: 18, price: 12000, buyQuantity: "", category: "Gia vị" },
+    { id: "SP012", name: "Sữa đặc Ông Thọ nhãn đỏ (380g)", unit: "Hộp", quantity: 20, price: 24000, buyQuantity: "", category: "Sữa & chế phẩm" },
+    { id: "SP013", name: "Sữa chua Vinamilk có đường (Lốc 4)", unit: "Lốc", quantity: 15, price: 28000, buyQuantity: "", category: "Sữa & chế phẩm" },
+    { id: "SP014", name: "Bánh quy OREO vị Chocolate (133g)", unit: "Gói", quantity: 22, price: 18000, buyQuantity: "", category: "Bánh kẹo" },
+    { id: "SP015", name: "Bánh Chocopie Orion (Hộp 12 cái)", unit: "Hộp", quantity: 19, price: 58000, buyQuantity: "", category: "Bánh kẹo" },
+    { id: "SP016", name: "Snack Oishi tôm cay (40g)", unit: "Gói", quantity: 31, price: 6000, buyQuantity: "", category: "Bánh kẹo" },
+    { id: "SP017", name: "Kẹo Chupa Chups hỗn hợp (Xô 60 que)", unit: "Xô", quantity: 15, price: 95000, buyQuantity: "", category: "Bánh kẹo" },
+    { id: "SP018", name: "Cà phê hòa tan Trung Nguyên G7 (3in1)", unit: "Hộp", quantity: 21, price: 62000, buyQuantity: "", category: "Đồ uống" },
+    { id: "SP019", name: "Trà xanh Lipton Nhãn Vàng (Hộp 25 gói)", unit: "Hộp", quantity: 18, price: 45000, buyQuantity: "", category: "Đồ uống" },
+    { id: "SP020", name: "Nước ngọt Coca-Cola (Lốc 6 lon)", unit: "Lốc", quantity: 22, price: 58000, buyQuantity: "", category: "Đồ uống" },
+    { id: "SP021", name: "Nước ngọt Pepsi Không Calo (Lốc 6 lon)", unit: "Lốc", quantity: 20, price: 56000, buyQuantity: "", category: "Đồ uống" },
+    { id: "SP022", name: "Nước khoáng Aquafina (1.5L)", unit: "Chai", quantity: 40, price: 10000, buyQuantity: "", category: "Đồ uống" },
+    { id: "SP023", name: "Nước tăng lực Redbull (Lon 250ml)", unit: "Lon", quantity: 36, price: 14000, buyQuantity: "", category: "Đồ uống" },
+    { id: "SP024", name: "Bia Heineken Silver (Thùng 24 lon)", unit: "Thùng", quantity: 12, price: 450000, buyQuantity: "", category: "Bia" },
+    { id: "SP025", name: "Bia Sài Gòn Special (Thùng 24 lon)", unit: "Thùng", quantity: 14, price: 330000, buyQuantity: "", category: "Bia" },
+    { id: "SP026", name: "Dầu xả Pantene Chăm Sóc Hư Tổn (300ml)", unit: "Chai", quantity: 16, price: 78000, buyQuantity: "", category: "Chăm sóc cá nhân" },
+    { id: "SP027", name: "Dầu gội Clear Bạc Hà (630g)", unit: "Chai", quantity: 15, price: 145000, buyQuantity: "", category: "Chăm sóc cá nhân" },
+    { id: "SP028", name: "Sữa tắm Lifebuoy Bảo Vệ Vượt Trội (850g)", unit: "Chai", quantity: 18, price: 165000, buyQuantity: "", category: "Chăm sóc cá nhân" },
+    { id: "SP029", name: "Xà bông cục Camay hương nước hoa (125g)", unit: "Bánh", quantity: 30, price: 15000, buyQuantity: "", category: "Chăm sóc cá nhân" },
+    { id: "SP030", name: "Kem đánh răng P/S Bảo Vệ 123 (240g)", unit: "Tuýp", quantity: 22, price: 38000, buyQuantity: "", category: "Chăm sóc cá nhân" },
+    { id: "SP031", name: "Bàn chải đánh răng Colgate SlimSoft", unit: "Cây", quantity: 28, price: 32000, buyQuantity: "", category: "Chăm sóc cá nhân" },
+    { id: "SP032", name: "Nước rửa tay Lifebuoy Cho Tay Bẩn (500ml)", unit: "Chai", quantity: 19, price: 68000, buyQuantity: "", category: "Chăm sóc cá nhân" },
+    { id: "SP033", name: "Bột giặt OMO Matic Cửa Trên (4.1kg)", unit: "Túi", quantity: 10, price: 210000, buyQuantity: "", category: "Gia dụng" },
+    { id: "SP034", name: "Nước giặt Ariel Hương Downy (3.1kg)", unit: "Túi", quantity: 11, price: 235000, buyQuantity: "", category: "Gia dụng" },
+    { id: "SP035", name: "Nước xả vải Comfort Nắng Mai (3.8L)", unit: "Túi", quantity: 13, price: 195000, buyQuantity: "", category: "Gia dụng" },
+    { id: "SP036", name: "Nước rửa chén Sunlight Chanh (3.6kg)", unit: "Can", quantity: 14, price: 115000, buyQuantity: "", category: "Gia dụng" },
+    { id: "SP037", name: "Nước lau sàn Sunlight Hương Hoa Lily (3.8kg)", unit: "Can", quantity: 12, price: 92000, buyQuantity: "", category: "Gia dụng" },
+    { id: "SP038", name: "Nước tẩy bồn cầu Vim Đậm Đặc (880ml)", unit: "Chai", quantity: 20, price: 39000, buyQuantity: "", category: "Gia dụng" },
+    { id: "SP039", name: "Khăn giấy ăn Pulppy (Gói 100 tờ)", unit: "Gói", quantity: 32, price: 18000, buyQuantity: "", category: "Gia dụng" },
+    { id: "SP040", name: "Giấy vệ sinh An An (Lốc 10 cuộn)", unit: "Lốc", quantity: 18, price: 42000, buyQuantity: "", category: "Gia dụng" },
+    { id: "SP041", name: "Màng bọc thực phẩm Ringo 500m", unit: "Cuộn", quantity: 15, price: 135000, buyQuantity: "", category: "Gia dụng" },
+    { id: "SP042", name: "Túi đựng rác tự hủy sinh học Okitree", unit: "Cuộn", quantity: 26, price: 25000, buyQuantity: "", category: "Gia dụng" },
+    { id: "SP043", name: "Nước lau kính Cif Hương Biển (520ml)", unit: "Chai", quantity: 17, price: 28000, buyQuantity: "", category: "Gia dụng" },
+    { id: "SP044", name: "Bột mì đa dụng Meizan (1kg)", unit: "Gói", quantity: 24, price: 23000, buyQuantity: "", category: "Gạo & đồ khô" },
+    { id: "SP045", name: "Nấm mèo đen sấy khô (100g)", unit: "Gói", quantity: 21, price: 22000, buyQuantity: "", category: "Gạo & đồ khô" },
+    { id: "SP046", name: "Miến dong riềng Cao Bằng (500g)", unit: "Gói", quantity: 19, price: 45000, buyQuantity: "", category: "Gạo & đồ khô" },
+    { id: "SP047", name: "Bún tươi khô Cầu Đước (500g)", unit: "Gói", quantity: 23, price: 19000, buyQuantity: "", category: "Gạo & đồ khô" },
+    { id: "SP048", name: "Xúc xích tiệt trùng Vissan (Gói 5 cây)", unit: "Gói", quantity: 27, price: 21000, buyQuantity: "", category: "Thực phẩm tươi & hộp" },
+    { id: "SP049", name: "Cá hộp Ba Cô Gái xốt cà (155g)", unit: "Lon", quantity: 30, price: 19000, buyQuantity: "", category: "Thực phẩm tươi & hộp" },
+    { id: "SP050", name: "Thịt heo 2 lát Vissan (150g)", unit: "Lon", quantity: 18, price: 28000, buyQuantity: "", category: "Thực phẩm tươi & hộp" },
+    { id: "SP051", name: "Đậu hũ non Học Viện (Khay 300g)", unit: "Khay", quantity: 16, price: 12000, buyQuantity: "", category: "Thực phẩm tươi & hộp" },
+    { id: "SP052", name: "Trứng gà tươi Ba Huân (Hộp 10 quả)", unit: "Hộp", quantity: 22, price: 34000, buyQuantity: "", category: "Thực phẩm tươi & hộp" },
+    { id: "SP053", name: "Trứng vịt muối Ba Huân (Hộp 4 quả)", unit: "Hộp", quantity: 14, price: 26000, buyQuantity: "", category: "Thực phẩm tươi & hộp" },
+    { id: "SP054", name: "Bơ thực vật Tường An (200g)", unit: "Hộp", quantity: 20, price: 19000, buyQuantity: "", category: "Sữa & chế phẩm" },
+    { id: "SP055", name: "Phô mai Con Bò Cười (Hộp 16 miếng)", unit: "Hộp", quantity: 13, price: 68000, buyQuantity: "", category: "Sữa & chế phẩm" },
+    { id: "SP056", name: "Kem Merino ốc quế dâu (100ml)", unit: "Cây", quantity: 25, price: 15000, buyQuantity: "", category: "Bánh kẹo" },
+    { id: "SP057", name: "Mì Omachi sườn hầm (Thùng 30 gói)", unit: "Thùng", quantity: 12, price: 165000, buyQuantity: "", category: "Mì & phở" },
+    { id: "SP058", name: "Mì Kokomi tôm chua cay (Thùng 30 gói)", unit: "Thùng", quantity: 15, price: 98000, buyQuantity: "", category: "Mì & phở" },
+    { id: "SP059", name: "Phở bò Vifon (Gói 65g)", unit: "Gói", quantity: 40, price: 9000, buyQuantity: "", category: "Mì & phở" },
+    { id: "SP060", name: "Hủ tiếu Nam Vang Acecook (Gói 70g)", unit: "Gói", quantity: 35, price: 10000, buyQuantity: "", category: "Mì & phở" },
+    { id: "SP061", name: "Cháo thịt bằm Vifon (Gói 50g)", unit: "Gói", quantity: 38, price: 8000, buyQuantity: "", category: "Mì & phở" },
+    { id: "SP062", name: "Nui ống Safoco (Gói 400g)", unit: "Gói", quantity: 20, price: 22000, buyQuantity: "", category: "Gạo & đồ khô" },
+    { id: "SP063", name: "Bánh phở khô Safoco (500g)", unit: "Gói", quantity: 18, price: 21000, buyQuantity: "", category: "Gạo & đồ khô" },
+    { id: "SP064", name: "Dầu oliu Borges Extra Virgin (250ml)", unit: "Chai", quantity: 10, price: 89000, buyQuantity: "", category: "Dầu ăn" },
+    { id: "SP065", name: "Dầu điều nguyên chất Tường An (1L)", unit: "Chai", quantity: 14, price: 72000, buyQuantity: "", category: "Dầu ăn" },
+    { id: "SP066", name: "Giấm gạo lên men Chin-su (500ml)", unit: "Chai", quantity: 22, price: 16000, buyQuantity: "", category: "Gia vị" },
+    { id: "SP067", name: "Tương cà Heinz (300g)", unit: "Chai", quantity: 19, price: 29000, buyQuantity: "", category: "Gia vị" },
+    { id: "SP068", name: "Mayonnaise Nam Dương (250g)", unit: "Chai", quantity: 17, price: 27000, buyQuantity: "", category: "Gia vị" },
+    { id: "SP069", name: "Xốt spaghetti Barilla (400g)", unit: "Hộp", quantity: 12, price: 48000, buyQuantity: "", category: "Gia vị" },
+    { id: "SP070", name: "Đậu xanh cà vỏ (500g)", unit: "Gói", quantity: 21, price: 28000, buyQuantity: "", category: "Gạo & đồ khô" },
+    { id: "SP071", name: "Đậu phộng rang muối (200g)", unit: "Gói", quantity: 26, price: 18000, buyQuantity: "", category: "Hạt & trái cây khô" },
+    { id: "SP072", name: "Hạt điều rang muối (250g)", unit: "Gói", quantity: 15, price: 89000, buyQuantity: "", category: "Hạt & trái cây khô" },
+    { id: "SP073", name: "Nho khô Chile (200g)", unit: "Gói", quantity: 16, price: 45000, buyQuantity: "", category: "Hạt & trái cây khô" },
+    { id: "SP074", name: "Yến mạch Quaker (500g)", unit: "Hộp", quantity: 14, price: 69000, buyQuantity: "", category: "Gạo & đồ khô" },
+    { id: "SP075", name: "Ngũ cốc Calbee trái cây (700g)", unit: "Túi", quantity: 11, price: 155000, buyQuantity: "", category: "Gạo & đồ khô" },
+    { id: "SP076", name: "Sữa bột Ensure Gold vani (850g)", unit: "Lon", quantity: 8, price: 685000, buyQuantity: "", category: "Sữa & chế phẩm" },
+    { id: "SP077", name: "Sữa bột Abbott Grow (900g)", unit: "Lon", quantity: 9, price: 495000, buyQuantity: "", category: "Sữa & chế phẩm" },
+    { id: "SP078", name: "Sữa đậu nành Fami (1L)", unit: "Hộp", quantity: 24, price: 18000, buyQuantity: "", category: "Sữa & chế phẩm" },
+    { id: "SP079", name: "Sữa chua uống Yakult (Lốc 5 chai)", unit: "Lốc", quantity: 20, price: 32000, buyQuantity: "", category: "Sữa & chế phẩm" },
+    { id: "SP080", name: "Sữa TH True Milk ít đường (1L)", unit: "Hộp", quantity: 22, price: 34000, buyQuantity: "", category: "Sữa & chế phẩm" },
+    { id: "SP081", name: "Bánh mì sandwich Kinh Đô (Gói 10 lát)", unit: "Gói", quantity: 18, price: 25000, buyQuantity: "", category: "Bánh kẹo" },
+    { id: "SP082", name: "Bánh gạo Ichi (Gói 100g)", unit: "Gói", quantity: 28, price: 16000, buyQuantity: "", category: "Bánh kẹo" },
+    { id: "SP083", name: "Bánh AFC dinh dưỡng (Hộp 200g)", unit: "Hộp", quantity: 19, price: 32000, buyQuantity: "", category: "Bánh kẹo" },
+    { id: "SP084", name: "Kẹo dẻo Haribo Goldbears (100g)", unit: "Gói", quantity: 23, price: 29000, buyQuantity: "", category: "Bánh kẹo" },
+    { id: "SP085", name: "Socola KitKat (Thanh 4 fingers)", unit: "Thanh", quantity: 40, price: 18000, buyQuantity: "", category: "Bánh kẹo" },
+    { id: "SP086", name: "Kẹo cao su Mentos vị bạc hà", unit: "Hộp", quantity: 30, price: 15000, buyQuantity: "", category: "Bánh kẹo" },
+    { id: "SP087", name: "Nước ngọt Sprite (Chai 1.5L)", unit: "Chai", quantity: 26, price: 19000, buyQuantity: "", category: "Đồ uống" },
+    { id: "SP088", name: "Nước ngọt Fanta cam (Chai 1.5L)", unit: "Chai", quantity: 24, price: 19000, buyQuantity: "", category: "Đồ uống" },
+    { id: "SP089", name: "Trà ô long Tea+ (Chai 1L)", unit: "Chai", quantity: 28, price: 15000, buyQuantity: "", category: "Đồ uống" },
+    { id: "SP090", name: "Nước tăng lực Sting dâu (Chai 330ml)", unit: "Chai", quantity: 36, price: 10000, buyQuantity: "", category: "Đồ uống" },
+    { id: "SP091", name: "Cà phê lon Highlands (Lon 180ml)", unit: "Lon", quantity: 32, price: 12000, buyQuantity: "", category: "Đồ uống" },
+    { id: "SP092", name: "Bia Tiger Crystal (Thùng 24 lon)", unit: "Thùng", quantity: 10, price: 390000, buyQuantity: "", category: "Bia" },
+    { id: "SP093", name: "Nước mắm Liên Thành nhãn vàng (600ml)", unit: "Chai", quantity: 18, price: 36000, buyQuantity: "", category: "Gia vị" },
+    { id: "SP094", name: "Tương đen Presgo (250g)", unit: "Chai", quantity: 16, price: 22000, buyQuantity: "", category: "Gia vị" },
+    { id: "SP095", name: "Bột canh Vedan (Gói 200g)", unit: "Gói", quantity: 29, price: 12000, buyQuantity: "", category: "Gia vị" },
+    { id: "SP096", name: "Tiêu đen xay Dh Foods (50g)", unit: "Hũ", quantity: 21, price: 28000, buyQuantity: "", category: "Gia vị" },
+    { id: "SP097", name: "Bột nghệ nguyên chất (100g)", unit: "Gói", quantity: 17, price: 25000, buyQuantity: "", category: "Gia vị" },
+    { id: "SP098", name: "Khô bò miếng (100g)", unit: "Gói", quantity: 14, price: 65000, buyQuantity: "", category: "Thực phẩm tươi & hộp" },
+    { id: "SP099", name: "Chả lụa Vissan (500g)", unit: "Cây", quantity: 12, price: 78000, buyQuantity: "", category: "Thực phẩm tươi & hộp" },
+    { id: "SP100", name: "Pate Gan Hạ Long (170g)", unit: "Lon", quantity: 20, price: 24000, buyQuantity: "", category: "Thực phẩm tươi & hộp" }
+];
+
+const formatCurrency = (value) =>
+  value.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+
+function App({products,setProducts}) {
+  // gọi localStorage để lấy danh sách sản phẩm
+  
+  
+  const [search, setSearch] = useState(''); // hàm tìm kiếm sản phẩm
+  const [categoryFilter, setCategoryFilter] = useState('Tất cả'); // phân loại theo hàng hóa
+  const [sortKey, setSortKey] = useState('id'); // sort theo giá trị mã hàng, tên giá, số lươngj
+  const [sortOrder, setSortOrder] = useState('asc'); // nhận 2 giá trị giảm dần hoặc tăng dần
+  // current page sẽ kiểm tra ddieeeuf kiện nếu thỏa thì áp dụng vào displayPage
+  const [currentPage, setCurrentPage] = useState(1); 
+  const [displayPage,setDisplayPage] = useState(1);
+  const itemsPerPage = 5; // số sản phẩm được hiển thị trong 1 trang
+
+  const [isModalOpen, setIsModalOpen] = useState(false); // modal để tạo sản phẩm
+  const [editingId, setEditingId] = useState(null); // id được sản phẩm 
+
+  const emptyForm = { id: '', name: '', price: '', quantity: '', category: '' };
+  const [form, setForm] = useState(emptyForm); // form thêm hàng hóa hoặc có thể là là sửa sản phẩm
+  const [errors, setErrors] = useState({}); // liệu có bị lỗi k
+
+  useEffect(() => {
+    localStorage.setItem('products', JSON.stringify(products)); // cần sửa cái này thành là prodcuts
+  }, [products]);
+  // phân loại thể loại
+  const categories = useMemo(
+    () => ['Tất cả', ...new Set(products.map((g) => g.category).filter(Boolean))],
+    [products]
+  );
+  // tìm kiếm sản phẩm  và lọc sản ph
+  const filteredProducts = useMemo(() => {
+    let list = products.filter((item) => {
+     
+      const matchSearch =
+        item.name.toLowerCase().includes(search.toLowerCase()) ||
+        item.id.toLowerCase().includes(search.toLowerCase());
+      const matchCategory =
+        categoryFilter === 'Tất cả' || item.category === categoryFilter;
+      
+      return matchSearch && matchCategory;
+    });
+  /// sort
+    list = [...list].sort((a, b) => {
+      let aVal = a[sortKey];
+      let bVal = b[sortKey];
+      if (typeof aVal === 'string') aVal = aVal.toLowerCase();
+      if (typeof bVal === 'string') bVal = bVal.toLowerCase();
+      if (aVal < bVal) return sortOrder === 'asc' ? -1 : 1;
+      if (aVal > bVal) return sortOrder === 'asc' ? 1 : -1;
+      return 0;
+    });
+
+    return list;
+  }, [products, search, categoryFilter, sortKey, sortOrder]);
+
+  
+  console.log(currentPage);
+  const paginatedProducts = filteredProducts.slice(
+    itemsPerPage*currentPage-itemsPerPage,itemsPerPage*currentPage
+  ); // phần này có thể k cần có thể ghi .slice((currentPage-1)*5,currentPage*5)
+  
+  const totalItems = products.reduce((sum, g) => sum + g.quantity, 0); // tổng mặt hàng
+  const totalValue = products.reduce((sum, g) => sum + g.price * g.quantity, 0); // tổng giá trị kho 
+  // tổng mặt hàng là prodcuts.length
+  // hàm sort
+  const handleSort = (key) => {
+    if (sortKey === key) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc'); 
+    } else {
+      setSortKey(key);
+      setSortOrder('asc');
+    }
+  };
+
+  const validate = () => {
+    const newErrors = {};
+    const productId = form.id.trim().toUpperCase();
+
+    if (!productId && editingId) {
+      newErrors.id = 'Mã hàng không được để trống';
+    }  else if (productId) {
+      const exists = products.some(
+        (g) => g.id.toUpperCase() === productId && g.id !== editingId
+      );
+      if (exists) newErrors.id = 'Mã hàng đã tồn tại';
+    }
+
+    if (!form.name.trim()) newErrors.name = 'Tên hàng hóa không được để trống';
+    if (!form.category.trim()) newErrors.category = 'Danh mục không được để trống';
+    if (form.price === '' || Number(form.price) < 0)
+      newErrors.price = 'Đơn giá phải >= 0';
+    if (form.quantity === '' || Number(form.quantity) < 0 || !Number.isInteger(Number(form.quantity)))
+      newErrors.quantity = 'Số lượng phải là số nguyên >= 0';
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // có thể là return true
+  };
+  
+  const openAddModal = () => {
+    setEditingId(null);
+    setForm(emptyForm);
+    setErrors({});
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (item) => {
+    setEditingId(item.id);
+    setForm({
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      quantity: item.quantity,
+      category: item.category,
+    });
+    setErrors({});
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSave = () => {
+    if (!validate()) return;
+    // phần hàng hóa
+    // sản phẩm k có mã phải bắt đầu bằng tên hàng hóa
+    const nextProductId = `SP${String(
+      products.reduce((max, product) => {
+        const match = product.id.match(/^SP(\d+)$/i);
+        return match ? Math.max(max, Number(match[1])) : max;
+      }, 0) + 1
+    ).padStart(3, '0')}`;
+    // các phần tử cuar sản phẩm
+    const payload = {
+      id: (form.id.trim() || nextProductId).toUpperCase(),
+      name: form.name.trim(),
+      price: Number(form.price),
+      quantity: Number(form.quantity),
+      category: form.category.trim(),
+    };
+    // lưu lại các phần chỉnh sửa
+    if (editingId) {
+      setProducts(products.map((g) => (g.id === editingId ? { ...g, ...payload } : g)));
+    } else {
+      setProducts([...products, payload]);
+    }
+    localStorage.setItem('products',JSON.stringify(products));
+    closeModal();
+  };
+
+  const handleDelete = (id) => {
+    const item = products.find((g) => g.id === id);
+    const confirmDelete = window.confirm(
+      `Bạn có chắc muốn xóa hàng hóa "${item.name}" (${item.id})?`
+    ); // nhận biến Boolean
+    if (confirmDelete) {
+      setProducts(products.filter((g) => g.id !== id)); // xóa ptu được xóa
+      localStorage.setItem('products',JSON.stringify(products))
+    }
+  };
+  // onClick vào khôi phục dữ liệu mẫu
+  const handleReset = () => {
+    if (window.confirm('Bạn có chắc muốn khôi phục dữ liệu mẫu ban đầu?')) {
+      setProducts(initialProducts);
+      setSearch('');
+      setCategoryFilter('Tất cả');
+      setSortKey('id');
+      setSortOrder('asc');
+      setCurrentPage(1);
+      setDisplayPage(1)
+    }
+  };
+
+  // bấm vào nút xóa bộ lọc
+  const resetFilters = () => {
+    setSearch('');
+    setCategoryFilter('Tất cả');
+    setSortKey('id');
+    setSortOrder('asc');
+    setCurrentPage(1); 
+  };
+  // ???
+  const handleClickOnPage =(x)=>{
+        
+    const newPage = currentPage+x;
+    if(newPage> products.length || newPage<1){
+        return;
+    }
+    setCurrentPage(newPage)
+    setDisplayPage(newPage)
+}
+  const totalPage = Math.ceil(products.length/5);
+  return (
+    <div className="app">
+      <h1 className="app-title">Quản lý hàng hóa</h1>
+
+      <div className="stats">
+        <div className="stat-card">
+          <div className="stat-label">Tổng số mặt hàng</div>
+          <div className="stat-value">{products.length}</div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-label">Tổng tồn kho</div>
+          <div className="stat-value">{totalItems}</div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-label">Tổng giá trị kho</div>
+          <div className="stat-value">{totalValue.toLocaleString('en-US')}</div>
+        </div>
+      </div>
+
+      <div className="content-layout">
+        <aside className="sidebar">
+          <div className="sidebar-header">
+            <span>🔍</span>
+            <span className="sidebar-title">Bộ lọc tìm kiếm</span>
+          </div>
+
+          <div className="filter-group">
+            <label className="filter-label">Tìm kiếm</label>
+            <input
+              type="text"
+              placeholder="Mã hoặc tên hàng hóa..."
+              className="filter-control"
+              value={search}
+              onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
+            />
+          </div>
+
+          <div className="filter-group">
+            <label className="filter-label">Danh mục</label>
+            <select
+              className="filter-control"
+              value={categoryFilter}
+              onChange={(e) => { setCategoryFilter(e.target.value); setCurrentPage(1); }}
+            >
+              {categories.map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="filter-group">
+            <label className="filter-label">Sắp xếp theo</label>
+            <select
+              className="filter-control"
+              value={`${sortKey}-${sortOrder}`}
+              onChange={(e) => {
+                const [key, order] = e.target.value.split('-');
+                setSortKey(key);
+                setSortOrder(order);
+                setCurrentPage(1);
+              }}
+            >
+              <option value="id-asc">Mã hàng (tăng dần)</option>
+              <option value="id-desc">Mã hàng (giảm dần)</option>
+              <option value="name-asc">Tên hàng (A-Z)</option>
+              <option value="name-desc">Tên hàng (Z-A)</option>
+              <option value="price-asc">Đơn giá (thấp → cao)</option>
+              <option value="price-desc">Đơn giá (cao → thấp)</option>
+              <option value="quantity-asc">Số lượng (thấp → cao)</option>
+              <option value="quantity-desc">Số lượng (cao → thấp)</option>
+            </select>
+          </div>
+
+          <button className="reset-filter-button" onClick={resetFilters}>
+            Xóa bộ lọc
+          </button>
+        </aside>
+
+        <main className="main-content">
+          <div className="toolbar">
+            <button className="button button-primary" onClick={openAddModal}>+ Thêm hàng hóa</button>
+            <button className="button button-secondary" onClick={handleReset}>Khôi phục dữ liệu mẫu</button>
+            <div className="result-count">Hiển thị {filteredProducts.length} kết quả</div>
+          </div>
+
+          {paginatedProducts.length === 0 ? (
+            <p className="empty-state">Không tìm thấy hàng hóa nào.</p>
+          ) : (
+            <>
+              <div className="table-scroll">
+              <table className="products-table">
+                <thead>
+                  <tr>
+                    <th className="table-heading" onClick={() => handleSort('id')}>Mã hàng {sortKey === 'id' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
+                    <th className="table-heading" onClick={() => handleSort('name')}>Tên hàng hóa {sortKey === 'name' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
+                    <th className="table-heading" onClick={() => handleSort('category')}>Danh mục {sortKey === 'category' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
+                    <th className="table-heading" onClick={() => handleSort('price')}>Đơn giá {sortKey === 'price' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
+                    <th className="table-heading" onClick={() => handleSort('quantity')}>Số lượng {sortKey === 'quantity' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
+                    <th className="table-heading">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {paginatedProducts.map((item) => (
+                    <tr key={item.id}>
+                      <td className="table-cell">{item.id}</td>
+                      <td className="table-cell">{item.name}</td>
+                      <td className="table-cell">{item.category}</td>
+                      <td className="table-cell">{formatCurrency(item.price)}</td>
+                      <td className="table-cell">{item.quantity}</td>
+                      <td className="table-cell">
+                        <div className="action-buttons">
+                          <button className="button button-edit" onClick={() => openEditModal(item)}>Sửa</button>
+                          <button className="button button-delete" onClick={() => handleDelete(item.id)}>Xóa</button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              </div>
+
+              
+                <div className="list-pageNumber">
+                <button
+                    className="page-btn"
+                    disabled={currentPage - 10 < 1}
+                    onClick={() => handleClickOnPage(-10)}
+                >
+                    {"<<"}
+                </button>
+                <button
+                    className="page-btn"
+                    disabled={currentPage - 1 < 1}
+                    onClick={() => handleClickOnPage(-1)}
+                >
+                    {"<"}
+                </button>
+                <input
+                    className="page-input"
+                    type="number"
+                    value={displayPage}
+                    onChange={(e) => {
+                        const page = parseInt(e.target.value, 10);
+                        setDisplayPage(page);
+                    }}
+                    onBlur={() => {
+                        if (!isNaN(displayPage)) {
+                            setCurrentPage(displayPage);
+                        }
+                        if (displayPage < 1 || displayPage > totalPage) {
+                            setCurrentPage(currentPage);
+                            setDisplayPage(currentPage);
+                        }
+                    }}
+                />
+                <button
+                    className="page-btn"
+                    disabled={currentPage+1 > totalPage}
+                    onClick={() => handleClickOnPage(+1)}
+                >
+                    {">"}
+                </button>
+                <button
+                    className="page-btn"
+                    disabled={currentPage+10>totalPage}
+               
+                    onClick={() => handleClickOnPage(+10)}
+                >
+                    {">>"}
+                </button>
+            </div>
+              
+            </>
+          )}
+        </main>
+      </div>
+
+      {isModalOpen && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <h2 className="modal-title">{editingId ? 'Sửa hàng hóa' : 'Thêm hàng hóa'}</h2>
+
+            <div className="form-group">
+              <label className="form-label">Mã hàng (vd: HH006)</label>
+              <input
+                className="form-control"
+                value={form.id}
+                onChange={(e) => setForm({ ...form, id: e.target.value })}
+                placeholder="HH006"
+              />
+              {errors.id && <div className="form-error">{errors.id}</div>}
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Tên hàng hóa</label>
+              <input
+                className="form-control"
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                placeholder="Nhập tên hàng hóa"
+              />
+              {errors.name && <div className="form-error">{errors.name}</div>}
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Danh mục</label>
+              <input
+                className="form-control"
+                value={form.category}
+                onChange={(e) => setForm({ ...form, category: e.target.value })}
+                placeholder="Nhập danh mục"
+                list="category-suggestions"
+              />
+              <datalist id="category-suggestions">
+                {categories.filter((c) => c !== 'Tất cả').map((c) => (
+                  <option key={c} value={c} />
+                ))}
+              </datalist>
+              {errors.category && <div className="form-error">{errors.category}</div>}
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Đơn giá (VNĐ)</label>
+              <input
+                type="number"
+                className="form-control"
+                value={form.price}
+                onChange={(e) => setForm({ ...form, price: e.target.value })}
+                placeholder="0"
+                min="0"
+              />
+              {errors.price && <div className="form-error">{errors.price}</div>}
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Số lượng</label>
+              <input
+                type="number"
+                className="form-control"
+                value={form.quantity}
+                onChange={(e) => setForm({ ...form, quantity: e.target.value })}
+                placeholder="0"
+                min="0"
+              />
+              {errors.quantity && <div className="form-error">{errors.quantity}</div>}
+            </div>
+
+            <div className="modal-actions">
+              <button className="button button-secondary" onClick={closeModal}>Hủy</button>
+              <button className="button button-primary" onClick={handleSave}>Lưu</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;

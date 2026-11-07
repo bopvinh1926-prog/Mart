@@ -14,7 +14,7 @@ html,body{
 }
 /* Container chứa các nút tab */
 /* Thanh chuyển tab (Sidebar) */
-.sidebar {
+.sidebarMain {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -25,8 +25,8 @@ html,body{
   width: fit-content; /* Đóng khung vừa vặn nút */
 }
 
-/* Style nút trong sidebar */
-.sidebar button {
+/* Style nút trong sidebarMain */
+.sidebarMain button {
   padding: 8px 18px;
   font-size: 14px;
   font-weight: 500;
@@ -40,12 +40,12 @@ html,body{
   outline: none;
 }
 
-.sidebar button:hover:not(.active) {
+.sidebarMain button:hover:not(.active) {
   color: #0f172a;
   background-color: #e2e8f0;
 }
 
-.sidebar button.active {
+.sidebarMain button.active {
   color: #2563eb; /* Chữ xanh nổi bật */
   background-color: #ffffff; /* Tab trắng nổi lên */
   font-weight: 600;
@@ -72,11 +72,11 @@ html,body{
     gap: 16px;
   }
 
-  .sidebar {
+  .sidebarMain {
     width: 100%; /* Phủ kín chiều rộng trên di động */
   }
 
-  .sidebar button {
+  .sidebarMain button {
     flex: 1; /* Hai nút chia đều 50% */
     text-align: center;
     padding: 10px 8px;
