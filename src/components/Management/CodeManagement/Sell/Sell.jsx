@@ -231,7 +231,7 @@ export default function Sell(){
                         {showWrapper && listSuggest.map(item => {
                         return(
                             <li
-                                className='product-item'
+                                className={`product-item ${item.quantity <3 ? 'outStock':''}`}
                                 key={item.id}
                                 
                                 onClick={() => {
@@ -243,6 +243,7 @@ export default function Sell(){
                                 
                                 <p>{item.id}</p>
                                 <p>{item.name}</p>
+                                <p>Số lượng: {item.quantity}</p>
                             </li>
                     
                         )})}
