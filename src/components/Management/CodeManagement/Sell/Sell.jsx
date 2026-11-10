@@ -1,4 +1,5 @@
 import '../../CSSManagement/Sell.css'
+import '../../CSSManagement/InforBill.css'
 import { useEffect, useRef, useState } from 'react'
 import { PRODUCTS_SELL } from '../../../../data/PRODUCTS_SELL.JS';
 import { formatDate } from '../../../utils/dateUtils';
@@ -208,6 +209,16 @@ export default function Sell(){
         alert("Bạn đã thanh toán đơn hàng")
         setListBuy([])
     }
+    const[isOpenBill,setIsOpenBill]= useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 900);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
     console.log(listProduct)
     return(
         <div className="sell">
@@ -251,6 +262,19 @@ export default function Sell(){
         
                 </div>
                 <div className='main-sell'>
+                {isMobile && (
+                    <button 
+                        className={`bill-hamburger-btn ${isOpenBill ? 'active' : ''}`} 
+                        onClick={() => setIsOpenBill(!isOpenBill)}
+                    >
+                        {isOpenBill ? '✕ Đóng' : ' Thanh toán'}
+                    </button>
+                )}
+                    
+
+                {/* Lớp phủ mờ nền - Chỉ xuất hiện khi mở trên mobile */}
+                {isOpenBill && <div className="bill-overlay" onClick={() => setIsOpenBill(false)}></div>}
+                    
                     <ul className="list-buy">
                         {listBuy.map((item,index)=>(
                             <li  className='product' key={index}>
@@ -274,7 +298,7 @@ export default function Sell(){
                                     >+</button>
                                     <button
                                         type="button"
-                                       // disabled={parseInt(item.buyQuantity || '0', 10) < 1}
+                                    // disabled={parseInt(item.buyQuantity || '0', 10) < 1}
                                         onClick={()=>handleButtonQuantity(index, -1)}
                                     >-</button>
                                 </div>
@@ -285,7 +309,10 @@ export default function Sell(){
                             </li>
                         ))}
                     </ul>
-                    <InforBill totalSum={total} payed={handlePay} choicePay={choicePayment} handleChoicePay={setChoicePayment}/>
+                    
+                    <div className={`bill-sidebar-container ${isOpenBill ? 'open' : ''}`}>
+                        <InforBill totalSum={total} payed={handlePay} choicePay={choicePayment} handleChoicePay={setChoicePayment} />
+                    </div>
                 </div>
 
             </div>

@@ -108,7 +108,7 @@ export default function InforBill({totalSum,payed,choicePay,handleChoicePay}){
                 {/* syntax này là đúng trong React JSX. Tuy nhiên, nên dùng comment trong JSX dạng {/* ... */}
                 <select
                     name=""
-                    id=""
+                    id="choice-pay"
                     value={choicePay}
                     onChange={(e) => handleChoicePay(e.target.value)}
                 >
