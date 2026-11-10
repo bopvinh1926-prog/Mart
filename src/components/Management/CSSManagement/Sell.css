@@ -6,7 +6,8 @@ body {
 }
 .sell {
     margin: 0 auto;
-    max-width: 1600px;
+    max-width: 1300px;
+    padding: 0 10px; /* Thêm padding nhẹ hai bên */
 }
 .sell-ctn {
     display: flex;
@@ -26,7 +27,6 @@ body {
     font-size: 16px;
     border: 1px solid #cbd5e1;
     border-radius: 8px;
-    
     box-sizing: border-box;
     outline: none;
     background: #f8fafc;
@@ -88,15 +88,6 @@ body {
     gap: 32px;
     width: 100%;
     height: 600px;
-
-}
-
-/* Responsive: stack main layout on mobile */
-@media (max-width: 900px) {
-    .main-sell {
-        flex-direction: column;
-        gap: 18px;
-    }
 }
 
 /* --- Left: Product List (list-buy) --- */
@@ -119,16 +110,6 @@ body {
 @media (max-width: 1200px) {
     .list-buy {
         width: 65%;
-    }
-}
-
-@media (max-width: 900px) {
-    .list-buy {
-        width: 100%;
-        min-width: 0;
-        height: auto;
-        margin-bottom: 0;
-        max-height: 340px;
     }
 }
 
@@ -209,7 +190,6 @@ input[type="number"] {
     outline: none;
     background: #f1f5f9;
     color: #1e293b;
-    padding: 0 0;
     border-radius: 50%;
     cursor: pointer;
     transition: background 0.2s, color 0.2s;
@@ -268,28 +248,101 @@ input[type="number"] {
     padding-left: 8px;
 }
 
-/* Responsive adjustments for product row & list */
+/* ==========================================================================
+   MỚI & CẢI TIẾN: RESPONSIVE CHO MOBILE & TABLET
+   ========================================================================== */
+
+/* --- Giao diện Tablet & Mobile nhỏ (Xếp chồng layout chính) --- */
+@media (max-width: 900px) {
+    .main-sell {
+        flex-direction: column; /* Chuyển từ hàng ngang thành hàng dọc */
+        height: auto;           /* Bỏ cố định chiều cao 600px để không tràn màn hình */
+        gap: 16px;
+    }
+
+    .list-buy {
+        width: 100%;            /* Chiếm trọn chiều rộng */
+        min-width: 0;
+        max-height: 450px;      /* Giới hạn chiều cao danh sách cuộn */
+        padding: 16px 10px;     /* Thu nhỏ padding của khung bên ngoài */
+    }
+}
+
+/* --- Giao diện Mobile siêu nhỏ (Dưới 600px) --- */
 @media (max-width: 600px) {
     .sell {
-        padding: 2px 4px;
+        padding: 2px 6px;
     }
-    .product {
-        flex-wrap: wrap;
-        gap: 5px;
-        padding: 8px 2px;
-    }
-    .total-price, .list-buy .item-code, .list-buy .item-name {
-        font-size: 14px;
-        min-width: 0;
-        width: auto;
-        padding-left: 2px;
-    }
-    .quantity-control {
-        min-width: 0;
-        gap: 3px;
-    }
+
+    /* Thu nhỏ thanh tìm kiếm */
     .add-product {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+    .suitable-list {
+        max-height: 200px;
+    }
+    .product-item {
+        font-size: 13px;
         padding: 8px 10px;
-        font-size: 15px;
+    }
+
+    /* Tối ưu hóa dòng sản phẩm được chọn */
+    .product {
+        flex-wrap: wrap;       /* Cho phép các phần tử rớt dòng nếu thiếu chỗ */
+        gap: 8px;
+        padding: 10px 8px;
+    }
+
+    /* Căn chỉnh lại kích thước chữ nhỏ gọn */
+    .list-buy .item-name {
+        width: 55%;            /* Chiếm phần lớn bên trái */
+        font-size: 14px;
+    }
+
+    .list-buy .item-code {
+        width: 35%;            /* Nằm bên cạnh tên sản phẩm */
+        font-size: 12px;
+        text-align: right;
+    }
+
+    /* Đưa bộ điều khiển số lượng và nút xóa xuống dòng dưới */
+    .quantity-control {
+        width: 100%;           /* Ép chiếm trọn dòng dưới */
+        justify-content: flex-start;
+        min-width: 0;
+        gap: 4px;
+        border-top: 1px dashed #f1f5f9; /* Thêm đường phân cách nhẹ */
+        padding-top: 6px;
+    }
+
+    /* Thu nhỏ các nút bấm để vừa ngón tay trên mobile mà không thô */
+    .quantity-control button {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+        margin-right: 4px;
+    }
+
+    .quantity {
+        width: 36px;
+        font-size: 13px;
+        padding: 2px 6px;
+        margin-right: 4px;
+    }
+
+    /* Đẩy tổng giá và nút xóa về phía bên phải của dòng dưới */
+    .total-price {
+        font-size: 14px;
+        flex-grow: 1;          /* Tự động đẩy phần còn lại qua phải */
+        text-align: right;
+        padding-right: 4px;
+    }
+
+    .delete-product-button {
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        font-size: 16px;
     }
 }
